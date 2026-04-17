@@ -48,7 +48,7 @@
             margin: 0; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden; /* Only hide horizontal overflow */
+            overflow-x: hidden; 
         }
         
         /* Nav Auth Mode Logic (Bulletproof) */
@@ -117,14 +117,16 @@
         }
         .apple-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
         
+        /* DEEP FIX 1: Allow elements to grow with text */
         #view-assessment .glass-card {
             max-height: none !important; 
             height: auto;
         }
 
+        /* DEEP FIX 2: Allow button text wrapping on mobile */
         .option-btn { 
-            white-space: normal; 
-            height: auto;        
+            white-space: normal !important; 
+            height: auto !important;        
             min-height: 60px;
             align-items: flex-start; 
             text-align: left;
@@ -134,12 +136,30 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             -webkit-tap-highlight-color: transparent;
+            padding: 1rem !important; /* Ensure padding for text */
+            display: flex;
+            flex-direction: row;
         }
         .option-btn:hover, .option-btn:active { 
             border-color: #3168FF; 
             background-color: #ffffff; 
             transform: translateX(4px); 
             box-shadow: 0 6px 16px rgba(49, 104, 255, 0.08);
+        }
+
+        /* DEEP FIX 3: Fully scrollable views for mobile */
+        .no-scroll-view {
+            min-height: calc(100vh - 64px); 
+            overflow-y: auto !important; 
+            display: flex;
+            flex-direction: column;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* DEEP FIX 4: Responsive Charts */
+        canvas {
+            max-width: 100% !important;
+            height: auto !important;
         }
 
         /* Scroll Animations */
@@ -200,7 +220,7 @@
             <span>M-Print</span>
         </div>
         
-        <!-- Nav Controls Wrapper (Hidden by CSS during Auth) -->
+        <!-- Nav Controls Wrapper -->
         <div id="nav-controls" class="flex-1 flex justify-end items-center">
             <!-- Desktop Nav Links -->
             <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
@@ -223,7 +243,7 @@
     </div>
 
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl flex-col px-6 py-6 space-y-4 md:hidden">
+    <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl flex-col px-6 py-6 space-y-4 md:hidden z-50">
         <button onclick="navigate('home'); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-apple-textDark hover:text-apple-blue py-2 border-b border-gray-100">Dashboard</button>
         <button onclick="scrollToElement('diagnostic-section'); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-apple-textDark hover:text-apple-blue py-2 border-b border-gray-100">Diagnostics</button>
         <button onclick="logout(); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-red-500 hover:text-red-600 py-2">Sign Out</button>
@@ -279,7 +299,7 @@
     </div>
 
     <!-- 2. HOME VIEW -->
-    <div id="view-home" class="hidden w-full flex-col pb-10">
+    <div id="view-home" class="hidden w-full flex-col pb-10 no-scroll-view">
         
         <!-- HERO SECTION -->
         <section class="relative w-full min-h-[calc(100vh-64px)] flex flex-col items-center justify-center text-center px-4 md:px-6">
@@ -440,13 +460,15 @@
 
     <!-- 3. ASSESSMENT VIEW -->
     <div id="view-assessment" class="hidden min-h-[calc(100vh-64px)] p-4 md:p-6 flex items-center justify-center fade-in-up">
-        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col max-h-[600px] shadow-glass-hover relative my-8">
+        <!-- Deep fix: max-h-[600px] removed to let questions breathe -->
+        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col shadow-glass-hover relative my-8">
             <div id="assessment-content" class="flex-grow flex flex-col justify-center w-full"></div>
         </div>
     </div>
 
-    <!-- 4. RESULTS VIEW (NATURALLY SCROLLABLE) -->
-    <div id="view-results" class="hidden p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex-col gap-6">
+    <!-- 4. RESULTS VIEW (NATURALLY SCROLLABLE FIX) -->
+    <!-- Removed no-scroll-view and added overflow-y-auto min-h-screen -->
+    <div id="view-results" class="hidden overflow-y-auto min-h-screen p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex-col gap-6">
         <!-- Header -->
         <div class="flex justify-between items-end">
             <div class="w-full">
@@ -505,7 +527,8 @@
 </main>
 
 <script>
-// --- UTILS & GLOBAL STATE ---
+// --- UTILS & GLOBAL STATE (RESTORED COMPLETELY) ---
+const API_BASE_URL = "https://mprint-cognitive-engine.onrender.com"; // Deep Fix: The Global URL
 let sessionId = ""; 
 let currentTopic = ""; 
 let currentLevel = "Beginner"; 
@@ -627,7 +650,7 @@ function navigate(view) {
     ['view-auth', 'view-home', 'view-assessment', 'view-results'].forEach(v => {
         const el = document.getElementById(v); if(el) el.classList.add('hidden');
         if(el && view === v && view === 'view-results') {
-            el.classList.add('flex'); // Ensure flex is applied to results
+            el.classList.add('flex'); 
         } else if (el && view !== 'view-results') {
             el.classList.remove('flex');
         }
@@ -635,32 +658,21 @@ function navigate(view) {
     
     document.getElementById(`view-${view}`).classList.remove('hidden');
     
-    // Toggles the auth-mode class on body, cleanly hiding/showing nav via CSS!
-    if(view === 'auth') {
-        document.body.classList.add('auth-mode');
-    } else {
-        document.body.classList.remove('auth-mode');
-    }
+    if(view === 'auth') { document.body.classList.add('auth-mode'); } 
+    else { document.body.classList.remove('auth-mode'); }
     
-    // Ensure natural page scroll jump to top
     window.scrollTo(0, 0);
 }
 
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
-    // small delay for transition
-    setTimeout(() => {
-        menu.classList.toggle('open');
-    }, 10);
+    setTimeout(() => { menu.classList.toggle('open'); }, 10);
 }
 
-// Ensure smooth scroll to sections within the main window
 function scrollToElement(id) { 
     const el = document.getElementById(id); 
-    if(el) {
-        window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
-    }
+    if(el) { window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
 }
 
 function setAndStart(topicStr) { 
@@ -712,12 +724,14 @@ async function handleAuth() {
     }
 
     const mockAuthResult = { access_token: "mock-token-123", user_id: 1 };
-    const result = await safeFetch(`https://mprint-cognitive-engine.onrender.com/${endpoint}`, { 
+    
+    // Deep Fix: Using proper backticks for variable interpolation
+    const result = await safeFetch(`${API_BASE_URL}/${endpoint}`, { 
         method: "POST", headers: {"Content-Type": "application/json"}, 
         body: JSON.stringify(data) 
     }, mockAuthResult);
     
-    if (result && !result.error) {
+    if (result && !result.error && !result.detail) {
         if (isLoginMode) { 
             localStorage.setItem("access_token", result.access_token);
             localStorage.setItem("user_id", result.user_id);
@@ -726,12 +740,12 @@ async function handleAuth() {
             navigate('home'); 
         }
         else { showToast("Success! Please Sign In."); toggleAuthMode(); }
-    } else { showToast(result.error || "Authentication Failed", "error"); }
+    } else { showToast(result.error || result.detail || "Authentication Failed", "error"); }
     
     btn.innerHTML = isLoginMode ? "Sign In" : "Continue"; btn.disabled = false;
 }
 
-// --- HISTORICAL DASHBOARD ---
+// --- HISTORICAL DASHBOARD & SPARKLINES (RESTORED) ---
 async function loadUserHistory(userId) {
     if(!userId) return;
     
@@ -740,7 +754,7 @@ async function loadUserHistory(userId) {
         "System Design": [{speed: 5.1, accuracy: 50}, {speed: 4.5, accuracy: 65}]
     };
     
-    const history = await safeFetch(`https://mprint-cognitive-engine.onrender.com/user-history?user_id=${userId}`, {}, mockHistory);
+    const history = await safeFetch(`${API_BASE_URL}/user-history?user_id=${userId}`, {}, mockHistory);
     
     const grid = document.getElementById('history-grid'); 
     const section = document.getElementById('user-progress-section');
@@ -795,7 +809,7 @@ async function startSession() {
         { question: `How do you validate your understanding of ${currentTopic}?`, options: [{text: "Building a small side project", style: "Activist", is_correct: true}, {text: "Explaining it to someone else", style: "Reflector", is_correct: true}, {text: "Taking a quiz or formal test", style: "Theorist", is_correct: false}], difficulty: 3, type: "behavioral" }
     ];
 
-    questions = await safeFetch(`https://mprint-cognitive-engine.onrender.com/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`, {}, mockQuestions);
+    questions = await safeFetch(`${API_BASE_URL}/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`, {}, mockQuestions);
     
     if (questions && questions.length > 0) { 
         currentQ = 0; responses = []; sessionId = "SESS_" + Date.now(); 
@@ -824,11 +838,11 @@ function showQuestion() {
         
         <div class="flex-grow flex flex-col justify-center min-h-0">
             <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-apple-textDark mb-6 md:mb-10 leading-snug tracking-tight text-center md:text-left">${q.question}</h3>
-            <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 max-h-[350px] pb-4">`;
+            <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 pb-4">`;
 
     q.options.forEach((opt, i) => { 
         html += `
-            <button onclick="selectOption(${i})" class="w-full text-left px-4 md:px-5 py-3 md:py-4 option-btn text-apple-textDark font-medium flex justify-between items-center group text-sm md:text-base">
+            <button onclick="selectOption(${i})" class="w-full option-btn text-apple-textDark font-medium group text-sm md:text-base">
                 <span>${opt.text}</span>
                 <svg class="w-4 h-4 text-gray-300 group-hover:text-apple-blue transition-colors flex-shrink-0 ml-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>`; 
@@ -838,6 +852,7 @@ function showQuestion() {
     document.getElementById("assessment-content").innerHTML = html;
 }
 
+// 🧠 ADAPTIVE DECISION ENGINE (RESTORED)
 function selectOption(index) {
     const selected = questions[currentQ].options[index];
     responses.push({ 
@@ -872,16 +887,16 @@ function selectOption(index) {
     }
 }
 
-// 🧠 ADAPTIVE DECISION ENGINE
 function decideNextQuestion(lastResponse, currentDifficulty) {
     if (!lastResponse.correct && lastResponse.time < 0.5) return Math.max(1, currentDifficulty - 1); 
     if (lastResponse.correct && lastResponse.time > 1.5) return Math.min(5, currentDifficulty + 1); 
     return currentDifficulty;
 }
 
+// --- SUBMIT & ANALYZE ---
 async function submitResults() {
     document.getElementById("assessment-content").innerHTML = `
-        <div class="flex flex-col items-center justify-center h-full fade-in-up">
+        <div class="flex flex-col items-center justify-center h-full fade-in-up py-10">
             <svg class="animate-spin w-10 h-10 text-apple-blue mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             <h3 class="text-xl font-bold tracking-tight mb-2 text-apple-textDark">Synthesizing Data</h3>
             <p class="text-apple-textLight text-xs font-semibold uppercase tracking-widest">Generating Pathway</p>
@@ -890,9 +905,8 @@ async function submitResults() {
     const userId = localStorage.getItem("user_id") || "1";
     const payload = { session_id: sessionId, target_skill: currentTopic, target_level: currentLevel, responses: responses };
     
-    // Dynamic Mock Fallback logic specifically targeting the user's responses
     const stylesCount = responses.reduce((acc, r) => { acc[r.style] = (acc[r.style] || 0) + 1; return acc; }, {});
-    const primaryStyle = Object.keys(stylesCount).reduce((a, b) => stylesCount[a] > stylesCount[b] ? a : b, "Activist");
+    const primaryStyle = Object.keys(stylesCount).length > 0 ? Object.keys(stylesCount).reduce((a, b) => stylesCount[a] > stylesCount[b] ? a : b) : "Activist";
     
     const mockResult = {
         mprint: { confidence: Math.floor(Math.random() * 20) + 75, marker: primaryStyle, message: "Pathway Calibrated" },
@@ -903,30 +917,28 @@ async function submitResults() {
     const mockTData = { status: "returning", improvement: 0.5, previous_speed: 4.2, history: [{speed: 4.2}, {speed: 3.5}] };
 
     try {
-        const result = await safeFetch("https://mprint-cognitive-engine.onrender.com/generate-path", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) }, mockResult);
-        const tData = await safeFetch(`https://mprint-cognitive-engine.onrender.com/topic-progress?topic=${encodeURIComponent(currentTopic)}`, {}, mockTData);
+        const result = await safeFetch(`${API_BASE_URL}/generate-path`, { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) }, mockResult);
+        const tData = await safeFetch(`${API_BASE_URL}/topic-progress?topic=${encodeURIComponent(currentTopic)}&user_id=${userId}`, {}, mockTData);
         
         renderResults(result, tData);
         
-        // Fire and forget save
-        safeFetch("https://mprint-cognitive-engine.onrender.com/save-session", { 
+        safeFetch(`${API_BASE_URL}/save-session`, { 
             method: "POST", headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({ user_id: parseInt(userId), session_id: sessionId, topic: currentTopic, target_level: currentLevel, responses: responses }) 
         }, {});
         
         loadUserHistory(userId);
     } catch (e) {
-        // Absolute safety catch
         console.error("Critical rendering error, fallback activated", e);
         renderResults(mockResult, mockTData);
     }
 }
 
-// --- RESULTS RENDERING & VISUALIZATION ---
+// --- RESULTS RENDERING & ADVANCED VISUALIZATION (RESTORED) ---
 function renderResults(result, tData) {
     navigate('results'); 
     document.getElementById('res-topic').innerText = currentTopic;
-    document.getElementById('res-conf').innerText = `${Math.round(result.mprint.confidence)}%`;
+    document.getElementById('res-conf').innerText = `${Math.round(result.mprint?.confidence || 0)}%`;
     
     let correct = responses.filter(r => r.is_correct).length;
     let accuracy = responses.length > 0 ? (correct / responses.length) * 100 : 0;
@@ -943,22 +955,21 @@ function renderResults(result, tData) {
     else insight = "Keep practicing.";
 
     document.getElementById('res-acc').innerText = `${accuracy.toFixed(0)}%`;
-    document.getElementById('res-style').innerText = result.mprint.marker || "Activist";
+    document.getElementById('res-style').innerText = result.mprint?.marker || "Activist";
     
-    const isReady = result.mprint.confidence >= 70;
+    const isReady = (result.mprint?.confidence || 0) >= 70;
     
-    // Corrected Wrapping layout for the Subtitle Container
     document.getElementById('res-subtitle-container').innerHTML = `
         <div class="flex flex-wrap items-center gap-2 mt-1 w-full">
             <p class="text-apple-textLight text-xs md:text-sm font-medium mr-1">Level: ${currentLevel}</p>
             <div class="flex items-center space-x-1.5 bg-white/50 px-3 py-1 rounded-full border border-white">
                 <span class="animate-pulse w-1.5 h-1.5 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'} flex-shrink-0"></span>
-                <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[9px] md:text-[10px] uppercase tracking-widest break-words whitespace-normal leading-tight">${result.mprint.message}</span>
+                <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[9px] md:text-[10px] uppercase tracking-widest break-words whitespace-normal leading-tight">${result.mprint?.message || insight}</span>
             </div>
         </div>`;
 
     let histHtml = "";
-    if (!tData || tData.status === "first_time") {
+    if (!tData || tData.status === "first_time" || !tData.history) {
         histHtml = `<div class="w-full"><p class="text-[10px] text-apple-textLight font-semibold">Initial Benchmark:</p><p class="text-lg font-bold text-apple-textDark">${currentSpeed.toFixed(1)}s</p></div>`;
     } else {
         const improved = tData.improvement > 0;
@@ -985,21 +996,21 @@ function renderResults(result, tData) {
     });
     document.getElementById('res-path').innerHTML = pathHtml + `</ul>`; 
     
-    // Slight delay allows containers to compute physical height before Chart.js renders
     setTimeout(() => { drawCharts(result, tData); }, 100);
 }
 
 function drawCharts(result, tData) {
-    if(radarChartInstance) radarChartInstance.destroy(); if(lineChartInstance) lineChartInstance.destroy();
+    if(radarChartInstance) radarChartInstance.destroy(); 
+    if(lineChartInstance) lineChartInstance.destroy();
     
     let dist = result.style_distribution || {"Activist": 1, "Reflector": 1, "Theorist": 1, "Pragmatist": 1};
     let total = Object.values(dist).reduce((a,b)=>a+b,0) || 1;
 
     const rData = [
-        (dist["Activist"] || 0) / total * 100,
-        (dist["Reflector"] || 0) / total * 100,
-        (dist["Theorist"] || 0) / total * 100,
-        (dist["Pragmatist"] || 0) / total * 100
+        ((dist["Activist"] || 0) / total) * 100,
+        ((dist["Reflector"] || 0) / total) * 100,
+        ((dist["Theorist"] || 0) / total) * 100,
+        ((dist["Pragmatist"] || 0) / total) * 100
     ];
     
     const radarCtx = document.getElementById('radarChart');
@@ -1012,7 +1023,7 @@ function drawCharts(result, tData) {
     }
     
     let speeds = tData && tData.history && tData.history.length > 0 ? tData.history.map(h => h.speed) : responses.map(r => r.time);
-    if(speeds.length === 0) speeds = [0]; // fallback to prevent empty chart error
+    if(!speeds || speeds.length === 0) speeds = [0]; 
     let labels = speeds.map((_, i) => `S${i+1}`);
     
     const lineCtx = document.getElementById('lineChart');
