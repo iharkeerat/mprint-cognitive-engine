@@ -48,7 +48,8 @@
             margin: 0; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden; 
+            overflow-x: hidden;
+overflow-y: auto;  
         }
         
         /* Nav Auth Mode Logic (Bulletproof) */
@@ -56,6 +57,26 @@
             display: none !important;
         }
 
+
+        @media (max-width: 640px) {
+    h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .glass-card {
+        padding: 1rem !important;
+    }
+
+    .option-btn {
+        font-size: 14px;
+    }
+
+    nav {
+        height: auto;
+        padding: 8px 0;
+    }
+} 
         /* 3D Background Scoped strictly to Hero */
         #canvas-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -103,7 +124,9 @@
             outline: none; 
             background: #ffffff; 
         }
-        
+        button {
+    touch-action: manipulation;
+}
         .apple-btn { 
             background: #1d1d1f; 
             color: white; 
@@ -570,7 +593,7 @@ function init3D() {
     camera.position.z = 8;
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
+    renderer.setPixelRatio(window.innerWidth < 768 ? 1 : 2);
     container.appendChild(renderer.domElement);
     
     const material = new THREE.MeshBasicMaterial({
@@ -647,27 +670,32 @@ function selectAuthLevel(value, el) {
 
 // --- NAVIGATION & UI FLOW ---
 function navigate(view) {
-    ['view-auth', 'view-home', 'view-assessment', 'view-results'].forEach(v => {
-        const el = document.getElementById(v); if(el) el.classList.add('hidden');
-        if(el && view === v && view === 'view-results') {
-            el.classList.add('flex'); 
-        } else if (el && view !== 'view-results') {
-            el.classList.remove('flex');
+    const views = ['auth', 'home', 'assessment', 'results'];
+
+    views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (!el) return;
+
+        if (v === view) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
         }
     });
-    
-    document.getElementById(`view-${view}`).classList.remove('hidden');
-    
-    if(view === 'auth') { document.body.classList.add('auth-mode'); } 
-    else { document.body.classList.remove('auth-mode'); }
-    
-    window.scrollTo(0, 0);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
-    setTimeout(() => { menu.classList.toggle('open'); }, 10);
+
+    if (menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        setTimeout(() => menu.classList.add('hidden'), 200);
+    } else {
+        menu.classList.remove('hidden');
+        setTimeout(() => menu.classList.add('open'), 10);
+    }
 }
 
 function scrollToElement(id) { 
