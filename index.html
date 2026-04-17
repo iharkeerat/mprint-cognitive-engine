@@ -680,7 +680,7 @@ async function handleAuth() {
     }
 
     try {
-        const res = await fetch(`http://127.0.0.1:8000/${endpoint}`, { 
+        const res = await fetch(`https://mprint-cognitive-engine.onrender.com/${endpoint}`, { 
             method: "POST", headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify(data) 
         });
@@ -705,7 +705,7 @@ async function handleAuth() {
 async function loadUserHistory(userId) {
     if(!userId) return;
     try {
-        const res = await fetch(`http://127.0.0.1:8000/user-history?user_id=${userId}`);
+        const res = await fetch(`https://mprint-cognitive-engine.onrender.com/user-history?user_id=${userId}`);
         const history = await res.json(); 
         const grid = document.getElementById('history-grid'); 
         const section = document.getElementById('user-progress-section');
@@ -756,7 +756,7 @@ async function startSession() {
     startBtn.innerHTML = "Initializing..."; startBtn.disabled = true;
 
     try {
-        const res = await fetch(`http://127.0.0.1:8000/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`);
+        const res = await fetch(`https://mprint-cognitive-engine.onrender.com/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`);
         questions = await res.json();
         if (questions && questions.length > 0) { 
             currentQ = 0; responses = []; sessionId = "SESS_" + Date.now(); 
@@ -849,18 +849,18 @@ async function submitResults() {
     
     try {
         const payload = { session_id: sessionId, target_skill: currentTopic, target_level: currentLevel, responses: responses };
-        const resPath = await fetch("http://127.0.0.1:8000/generate-path", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) });
+        const resPath = await fetch("https://mprint-cognitive-engine.onrender.com/generate-path", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) });
         const result = await resPath.json();
         
         let tData = { status: "first_time" }; 
         try { 
-            const tr = await fetch(`http://127.0.0.1:8000/topic-progress?topic=${encodeURIComponent(currentTopic)}`); 
+            const tr = await fetch(`https://mprint-cognitive-engine.onrender.com/topic-progress?topic=${encodeURIComponent(currentTopic)}`); 
             if(tr.ok) tData = await tr.json(); 
         } catch(e){}
         
         renderResults(result, tData);
         
-        await fetch("http://127.0.0.1:8000/save-session", { 
+        await fetch("https://mprint-cognitive-engine.onrender.com/save-session", { 
             method: "POST", headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({ 
                 user_id: parseInt(userId), session_id: sessionId, 
