@@ -112,7 +112,17 @@
         }
         .apple-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
         
+        #view-assessment .glass-card {
+            max-height: none !important; 
+            height: auto;
+        }
+
         .option-btn { 
+            white-space: normal; 
+            height: auto;        
+            min-height: 60px;
+            align-items: flex-start; 
+            text-align: left;
             background: rgba(255, 255, 255, 0.8); 
             border: 1px solid rgba(0,0,0,0.05); 
             border-radius: 18px; 
@@ -128,8 +138,8 @@
 
         /* Layout Lock Classes */
         .no-scroll-view {
-            height: calc(100vh - 64px);
-            overflow: hidden;
+            min-height: calc(100vh - 64px);
+            overflow-y: auto; 
             display: flex;
             flex-direction: column;
         }
@@ -439,7 +449,7 @@
     </div>
 
     <!-- 4. RESULTS VIEW (STRICTLY NO SCROLL ON DESKTOP) -->
-    <div id="view-results" class="hidden no-scroll-view p-4 md:p-6 fade-in-up w-full max-w-6xl mx-auto">
+    <div id="view-results" class="hidden min-h-screen p-4 md:p-6 fade-in-up w-full max-w-6xl mx-auto overflow-y-auto">
         <!-- Header -->
         <div class="flex justify-between items-end mb-4 flex-shrink-0">
             <div>
@@ -782,7 +792,7 @@ function showQuestion() {
         </div>
         
         <div class="flex-grow flex flex-col justify-center min-h-0">
-            <h3 class="text-xl md:text-3xl font-bold text-apple-textDark mb-6 md:mb-10 leading-snug tracking-tight text-center md:text-left">${q.question}</h3>
+            <h3 class="text-lg md:text-2xl lg:text-3xl font-bold text-apple-textDark mb-6 md:mb-10 leading-snug tracking-tight text-center md:text-left">${q.question}</h3>
             <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 max-h-[300px]">`;
 
     q.options.forEach((opt, i) => { 
