@@ -110,6 +110,7 @@ This work is not a complete solution, but an evolving attempt to bridge AI syste
 - Cognitive modeling is approximate, not definitive.
 - Behavioral signals may not fully capture learning depth.
 - Requires further empirical validation.
+- Usage of the Gemini API (free tier) is subject to quota limitations. Exceeding the quota may lead to repeated questions, delayed responses, or occasional errors.
 
 ---
 
