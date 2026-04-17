@@ -48,10 +48,14 @@
             margin: 0; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden; 
-            scroll-behavior: smooth;
+            overflow-x: hidden; /* Only hide horizontal overflow */
         }
         
+        /* Nav Auth Mode Logic (Bulletproof) */
+        body.auth-mode #nav-controls {
+            display: none !important;
+        }
+
         /* 3D Background Scoped strictly to Hero */
         #canvas-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -138,13 +142,6 @@
             box-shadow: 0 6px 16px rgba(49, 104, 255, 0.08);
         }
 
-        /* Layout Lock Classes */
-        .no-scroll-view {
-            min-height: calc(100vh - 64px);
-            display: flex;
-            flex-direction: column;
-        }
-
         /* Scroll Animations */
         .scroll-element {
             opacity: 0;
@@ -191,20 +188,20 @@
     </style>
 </head>
 
-<body class="relative flex flex-col h-screen">
+<body class="relative min-h-screen text-apple-textDark antialiased">
 
 <div id="toast-container"></div>
 
 <!-- NAVIGATION -->
-<nav class="glass-nav fixed top-0 w-full z-50 h-16 transition-all flex-shrink-0">
+<nav class="glass-nav fixed top-0 w-full z-50 h-16 transition-all">
     <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
         <div class="flex items-center space-x-2 font-bold tracking-tight text-xl cursor-pointer flex-shrink-0" onclick="navigate('home')">
             <svg class="w-6 h-6 text-apple-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             <span>M-Print</span>
         </div>
         
-        <!-- Nav Controls Wrapper (Hidden during Auth) -->
-        <div id="nav-controls" class="hidden flex-1 justify-end items-center">
+        <!-- Nav Controls Wrapper (Hidden by CSS during Auth) -->
+        <div id="nav-controls" class="flex-1 flex justify-end items-center">
             <!-- Desktop Nav Links -->
             <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
                 <button onclick="navigate('home')" class="hover:text-apple-textDark transition-colors">Dashboard</button>
@@ -234,10 +231,10 @@
 </nav>
 
 <!-- MAIN CONTENT WRAPPER -->
-<main class="w-full flex-grow relative z-10 pt-16 flex flex-col overflow-y-auto" id="main-scroll-area">
+<main class="w-full relative z-10 pt-16">
     
     <!-- 1. AUTH VIEW -->
-    <div id="view-auth" class="px-4 flex-grow flex items-center justify-center fade-in-up pb-10">
+    <div id="view-auth" class="px-4 min-h-[calc(100vh-64px)] flex items-center justify-center fade-in-up pb-10">
         <div class="glass-card rounded-[2rem] p-6 md:p-10 max-w-md w-full relative">
             <div class="text-center mb-8">
                 <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-gray-100">
@@ -281,8 +278,8 @@
         </div>
     </div>
 
-    <!-- 2. HOME VIEW (Scrollable) -->
-    <div id="view-home" class="hidden w-full flex flex-col">
+    <!-- 2. HOME VIEW -->
+    <div id="view-home" class="hidden w-full flex-col pb-10">
         
         <!-- HERO SECTION -->
         <section class="relative w-full min-h-[calc(100vh-64px)] flex flex-col items-center justify-center text-center px-4 md:px-6">
@@ -441,17 +438,17 @@
         </footer>
     </div>
 
-    <!-- 3. ASSESSMENT VIEW (STRICTLY NO SCROLL) -->
-    <div id="view-assessment" class="hidden no-scroll-view p-4 md:p-6 items-center justify-center fade-in-up">
-        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col h-full max-h-[600px] shadow-glass-hover relative mt-10 md:mt-0">
+    <!-- 3. ASSESSMENT VIEW -->
+    <div id="view-assessment" class="hidden min-h-[calc(100vh-64px)] p-4 md:p-6 flex items-center justify-center fade-in-up">
+        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col max-h-[600px] shadow-glass-hover relative my-8">
             <div id="assessment-content" class="flex-grow flex flex-col justify-center w-full"></div>
         </div>
     </div>
 
-    <!-- 4. RESULTS VIEW (NOW FREELY SCROLLABLE) -->
-    <div id="view-results" class="hidden p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex flex-col h-auto">
+    <!-- 4. RESULTS VIEW (NATURALLY SCROLLABLE) -->
+    <div id="view-results" class="hidden p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex-col gap-6">
         <!-- Header -->
-        <div class="flex justify-between items-end mb-4 flex-shrink-0 mt-4 md:mt-0">
+        <div class="flex justify-between items-end">
             <div class="w-full">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-textDark mb-1" id="res-topic">Results</h2>
                 <div id="res-subtitle-container" class="w-full"></div>
@@ -460,7 +457,7 @@
         </div>
 
         <!-- Metric Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 flex-shrink-0">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
                 <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Confidence</p>
                 <p class="text-2xl md:text-3xl font-bold tracking-tight text-apple-textDark" id="res-conf">0%</p>
@@ -487,21 +484,21 @@
                 <div class="flex-grow overflow-y-auto custom-scrollbar pr-2" id="res-path"></div>
             </div>
             
-            <!-- Charts Area - Changed from h-full/overflow-hidden to allow natural mobile stacking -->
+            <!-- Charts Area -->
             <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[300px] items-center">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
-                    <div class="w-full h-full relative"><canvas id="radarChart"></canvas></div>
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col items-center">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-4 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
+                    <div class="w-full relative min-h-[250px] sm:min-h-[300px]"><canvas id="radarChart"></canvas></div>
                 </div>
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[300px]">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
-                    <div class="w-full h-full relative"><canvas id="lineChart"></canvas></div>
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-4 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
+                    <div class="w-full relative min-h-[250px] sm:min-h-[300px]"><canvas id="lineChart"></canvas></div>
                 </div>
             </div>
         </div>
         
         <!-- Mobile Done Button -->
-        <div class="mt-4 md:hidden flex-shrink-0 w-full pb-4">
+        <div class="md:hidden w-full pb-4 pt-2">
             <button onclick="navigate('home')" class="apple-btn w-full py-3.5 text-sm font-semibold">Done</button>
         </div>
     </div>
@@ -629,26 +626,24 @@ function selectAuthLevel(value, el) {
 function navigate(view) {
     ['view-auth', 'view-home', 'view-assessment', 'view-results'].forEach(v => {
         const el = document.getElementById(v); if(el) el.classList.add('hidden');
+        if(el && view === v && view === 'view-results') {
+            el.classList.add('flex'); // Ensure flex is applied to results
+        } else if (el && view !== 'view-results') {
+            el.classList.remove('flex');
+        }
     });
+    
     document.getElementById(`view-${view}`).classList.remove('hidden');
     
-    const navControls = document.getElementById('nav-controls');
+    // Toggles the auth-mode class on body, cleanly hiding/showing nav via CSS!
     if(view === 'auth') {
-        navControls.classList.add('hidden');
-        navControls.classList.remove('flex');
+        document.body.classList.add('auth-mode');
     } else {
-        navControls.classList.remove('hidden');
-        navControls.classList.add('flex');
+        document.body.classList.remove('auth-mode');
     }
     
-    // Corrected Scrolling Logic: We only lock the scroll area on Assessment view.
-    const mainArea = document.getElementById('main-scroll-area');
-    if(view === 'assessment') {
-        mainArea.style.overflowY = 'hidden';
-    } else {
-        mainArea.style.overflowY = 'auto';
-    }
-    mainArea.scrollTo(0, 0);
+    // Ensure natural page scroll jump to top
+    window.scrollTo(0, 0);
 }
 
 function toggleMobileMenu() {
@@ -660,7 +655,14 @@ function toggleMobileMenu() {
     }, 10);
 }
 
-function scrollToElement(id) { const el = document.getElementById(id); if(el) document.getElementById('main-scroll-area').scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+// Ensure smooth scroll to sections within the main window
+function scrollToElement(id) { 
+    const el = document.getElementById(id); 
+    if(el) {
+        window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+    }
+}
+
 function setAndStart(topicStr) { 
     document.getElementById("topic").value = topicStr; 
     scrollToElement('diagnostic-section'); 
