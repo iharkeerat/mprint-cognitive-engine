@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Print | Cognitive Intelligence</title>
+    
+    <!-- Fonts & Scripts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'] },
+                    colors: { 
+                        apple: { 
+                            blue: '#3168FF', 
+                            purple: '#9A35FF',
+                            textDark: '#1d1d1f',
+                            textLight: '#86868b',
+                            bg: '#fcfcfd'
+                        }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px rgba(0, 0, 0, 0.04)',
+                        'glass-hover': '0 12px 48px rgba(49, 104, 255, 0.08)',
+                        'float': '0 20px 40px rgba(0, 0, 0, 0.08)',
+                        'inner-white': 'inset 0 1px 1px rgba(255,255,255,0.8)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Global Unified Aesthetic */
+        body { 
+            background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f4f6fc 50%, #f1eafd 100%);
+            background-attachment: fixed;
+            color: #1d1d1f; 
+            margin: 0; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+        }
+        
+        /* 3D Background Scoped strictly to Hero */
+        #canvas-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 1;
+            mask-image: radial-gradient(circle at 50% 40%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: radial-gradient(circle at 50% 40%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+        }
+
+        /* Glassmorphism Classes */
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: saturate(180%) blur(20px); 
+            -webkit-backdrop-filter: saturate(180%) blur(20px); 
+            border-bottom: 1px solid rgba(255,255,255,0.6); 
+        }
+        
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: saturate(180%) blur(30px); 
+            -webkit-backdrop-filter: saturate(180%) blur(30px); 
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.8); 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover { 
+            box-shadow: 0 12px 48px rgba(49, 104, 255, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9); 
+            transform: translateY(-2px); 
+            background: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* Premium UI Elements */
+        .apple-input { 
+            background: rgba(255, 255, 255, 0.8); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            border-radius: 14px; 
+            transition: all 0.3s ease; 
+            color: #1d1d1f;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .apple-input::placeholder { color: #86868b; }
+        .apple-input:focus { 
+            border-color: #3168FF; 
+            box-shadow: 0 0 0 4px rgba(49, 104, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.01); 
+            outline: none; 
+            background: #ffffff; 
+        }
+        
+        .apple-btn { 
+            background: #1d1d1f; 
+            color: white; 
+            border-radius: 980px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .apple-btn:hover:not(:disabled) { 
+            background: #000000; 
+            transform: scale(1.02); 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+        }
+        .apple-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+        
+        .option-btn { 
+            background: rgba(255, 255, 255, 0.8); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            border-radius: 18px; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .option-btn:hover { 
+            border-color: #3168FF; 
+            background-color: #ffffff; 
+            transform: translateX(4px); 
+            box-shadow: 0 6px 16px rgba(49, 104, 255, 0.08);
+        }
+
+        /* Layout Lock Classes */
+        .no-scroll-view {
+            height: calc(100vh - 64px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scroll Animations */
+        .scroll-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-element.scrolled-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Instant Load Animations for Hero */
+        .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px;}
+        .toast {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.8);
+            padding: 14px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            font-size: 14px; font-weight: 500; display: flex; align-items: center;
+            animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #1d1d1f;
+        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+    </style>
+</head>
+
+<body class="relative flex flex-col h-screen">
+
+<div id="toast-container"></div>
+
+<!-- NAVIGATION -->
+<nav class="glass-nav fixed top-0 w-full z-50 h-16 transition-all flex-shrink-0">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+        <div class="flex items-center space-x-2 font-bold tracking-tight text-xl cursor-pointer" onclick="navigate('home')">
+            <svg class="w-6 h-6 text-apple-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span>M-Print</span>
+        </div>
+        <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
+            <button onclick="navigate('home')" class="hover:text-apple-textDark transition-colors">Dashboard</button>
+            <button onclick="scrollToElement('diagnostic-section')" class="hover:text-apple-textDark transition-colors">Diagnostics</button>
+            <div class="h-4 w-px bg-gray-300/50"></div>
+            <button onclick="logout()" class="text-apple-textLight hover:text-red-500 transition-colors flex items-center">
+                <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sign Out
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT WRAPPER -->
+<main class="w-full flex-grow relative z-10 pt-16 flex flex-col overflow-y-auto" id="main-scroll-area">
+    
+    <!-- 1. AUTH VIEW -->
+    <div id="view-auth" class="px-4 flex-grow flex items-center justify-center fade-in-up pb-10">
+        <div class="glass-card rounded-[2rem] p-8 md:p-10 max-w-md w-full relative">
+            <div class="text-center mb-8">
+                <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-gray-100">
+                    <svg class="w-7 h-7 text-apple-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight mb-1 text-apple-textDark" id="auth-title">Welcome</h2>
+                <p class="text-apple-textLight text-sm" id="auth-sub">Sign in to your workspace.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div id="signup-fields" class="hidden space-y-4 fade-in-up">
+                    <input id="name" type="text" placeholder="Full Name" class="apple-input w-full py-3.5 px-4 text-sm" />
+                    
+                    <!-- Premium Segmented Control for Auth Level -->
+                   <div class="relative flex gap-2 p-1.5 bg-white/70 backdrop-blur-md border border-gray-200/50 rounded-[14px] shadow-inner items-center">
+
+    <input type="hidden" id="level" value="Beginner">
+
+    <button type="button" onclick="selectAuthLevel('Beginner', this)"
+        class="auth-level-btn flex-1 py-2 px-3 text-[11px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue">
+        Beginner
+    </button>
+
+    <button type="button" onclick="selectAuthLevel('Intermediate', this)"
+        class="auth-level-btn flex-1 py-2 px-3 text-[11px] font-bold rounded-xl bg-white text-gray-500">
+        Intermediate
+    </button>
+
+    <button type="button" onclick="selectAuthLevel('Advanced', this)"
+        class="auth-level-btn flex-1 py-2 px-3 text-[11px] font-bold rounded-xl bg-white text-gray-500">
+        Advanced
+    </button>
+
+</div>
+                    <input id="goal" type="text" placeholder="Primary Learning Goal" class="apple-input w-full py-3.5 px-4 text-sm" />
+                </div>
+                
+                <input id="email" type="email" placeholder="Email Address" class="apple-input w-full py-3.5 px-4 text-sm" />
+                <input id="password" type="password" placeholder="Password" class="apple-input w-full py-3.5 px-4 text-sm" />
+                
+                <button id="auth-btn" onclick="handleAuth()" class="apple-btn w-full py-3.5 font-semibold mt-6 text-sm">Sign In</button>
+                
+                <div class="text-center mt-5">
+                    <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs font-medium text-apple-textLight hover:text-apple-blue transition-colors">
+                        Don't have an account? <span class="text-apple-blue">Create one</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. HOME VIEW (Scrollable) -->
+    <div id="view-home" class="hidden w-full flex flex-col">
+        
+        <!-- HERO SECTION (Strict 100vh lock to hide content on load) -->
+        <section class="relative w-full min-h-[calc(100vh-64px)] flex flex-col items-center justify-center text-center px-4 md:px-6">
+            <!-- 3D Element Strictly Behind Text in Hero -->
+            <div id="canvas-container"></div>
+
+            <div class="relative z-10 max-w-4xl mx-auto pb-10">
+                <span class="fade-in-up inline-flex items-center py-1.5 px-5 rounded-full bg-white/70 backdrop-blur border border-blue-100/50 text-[#3168FF] text-[10px] font-bold tracking-[0.2em] uppercase mb-8 shadow-sm">
+                    AI-Driven Learning
+                </span>
+                
+                <h1 class="fade-in-up delay-100 text-6xl md:text-8xl lg:text-[100px] font-black tracking-tighter mb-4 text-apple-textDark leading-[0.95]">
+                    Map your mind.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#3168FF] to-[#9A35FF]">Master any skill.</span>
+                </h1>
+                
+                <p class="fade-in-up delay-200 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-12 mt-6 font-medium px-4 leading-relaxed">
+                    M-Print uses behavioral analytics and a Neo4j Knowledge Graph to diagnose your cognitive style and generate personalized learning pathways.
+                </p>
+                
+                <!-- Premium Buttons Container -->
+                <div class="fade-in-up delay-300 flex flex-col sm:flex-row justify-center items-center gap-8 px-4">
+                    <!-- Primary Button -->
+                    <button onclick="scrollToElement('diagnostic-section')" class="w-full sm:w-auto px-12 py-4 rounded-full bg-gradient-to-r from-[#3168FF] to-[#9A35FF] text-white font-bold text-lg shadow-[0_8px_30px_rgba(154,53,255,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(154,53,255,0.4)] transition-all duration-300">
+                        Take the Test
+                    </button>
+                    <!-- Gradient Outline Secondary Button -->
+                    <button onclick="scrollToElement('featured-section')" class="w-full sm:w-auto p-[2.5px] rounded-full bg-gradient-to-r from-[#3168FF] to-[#9A35FF] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                        <div class="px-10 py-[14px] bg-[#fcfcfd]/90 backdrop-blur-md rounded-full w-full h-full group-hover:bg-white/70 transition-colors">
+                            <span class="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#3168FF] to-[#9A35FF]">Explore Topics</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD SECTION -->
+        <section id="user-progress-section" class="hidden max-w-5xl w-full mx-auto px-6 pt-16 mb-16 scroll-element relative z-10">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold tracking-tight text-apple-textDark">Your Analytics</h3>
+            </div>
+            <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+        <!-- TRENDING PATHWAYS -->
+        <section id="featured-section" class="max-w-5xl w-full mx-auto px-6 py-12 relative z-10 scroll-element">
+            <div class="mb-8 flex flex-col items-center text-center sm:items-start sm:text-left">
+                <h3 class="text-xl font-bold tracking-tight text-apple-textDark">Standard Modules</h3>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="setAndStart('Machine Learning')" class="glass-card rounded-[1.5rem] p-6 text-left group flex flex-col justify-between h-32">
+                    <svg class="w-6 h-6 text-apple-blue mb-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <p class="font-semibold text-sm text-apple-textDark">Machine<br>Learning</p>
+                </button>
+                <button onclick="setAndStart('System Design')" class="glass-card rounded-[1.5rem] p-6 text-left group flex flex-col justify-between h-32">
+                    <svg class="w-6 h-6 text-apple-purple mb-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                    <p class="font-semibold text-sm text-apple-textDark">System<br>Design</p>
+                </button>
+                <button onclick="setAndStart('React Architecture')" class="glass-card rounded-[1.5rem] p-6 text-left group flex flex-col justify-between h-32">
+                    <svg class="w-6 h-6 text-[#61DAFB] mb-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <p class="font-semibold text-sm text-apple-textDark">React<br>Architecture</p>
+                </button>
+                <button onclick="setAndStart('Cyber Security')" class="glass-card rounded-[1.5rem] p-6 text-left group flex flex-col justify-between h-32">
+                    <svg class="w-6 h-6 text-emerald-500 mb-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <p class="font-semibold text-sm text-apple-textDark">Cyber<br>Security</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- DIAGNOSTIC INPUT -->
+        <section id="diagnostic-section" class="max-w-5xl w-full mx-auto px-4 md:px-6 mb-16 relative z-10 scroll-element">
+            <div class="glass-card rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row gap-5 items-end">
+                <div class="w-full flex-grow">
+                    <label class="block text-[11px] font-bold text-apple-textLight uppercase tracking-widest mb-3 pl-1">Target Subject</label>
+                    <input type="text" id="topic" placeholder="e.g. Python, Algorithms" class="apple-input w-full py-4 px-5 text-[15px] font-semibold" />
+                </div>
+                
+                <div class="w-full md:w-[40%]">
+    <label class="block text-[11px] font-bold text-apple-textLight uppercase tracking-widest mb-3 pl-1">Current Level</label>
+    
+    <div class="relative flex gap-2 p-1.5 bg-white/70 backdrop-blur-md border border-gray-200/60 rounded-[16px] shadow-inner items-center h-[54px]">
+        <input type="hidden" id="test-level" value="Beginner">
+        
+        <button type="button" onclick="selectLevel('Beginner', this)" class="level-btn flex-1 h-full px-4 flex items-center justify-center text-[13px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue transition-all duration-300 transform scale-100">
+            Beginner
+        </button>
+        
+        <button type="button" onclick="selectLevel('Intermediate', this)" class="level-btn flex-1 h-full px-4 flex items-center justify-center text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">
+            Intermediate
+        </button>
+        
+        <button type="button" onclick="selectLevel('Advanced', this)" class="level-btn flex-1 h-full px-4 flex items-center justify-center text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">
+            Advanced
+        </button>
+    </div>
+</div>
+
+                <div class="w-full md:w-auto mt-2 md:mt-0">
+                    <button id="start-btn" onclick="startSession()" class="w-full md:w-auto px-8 h-[54px] rounded-[16px] bg-gradient-to-r from-[#3168FF] to-[#9A35FF] text-white font-bold text-[16px] shadow-[0_4px_14px_rgba(154,53,255,0.25)] hover:shadow-[0_8px_25px_rgba(154,53,255,0.4)] hover:-translate-y-0.5 transition-all whitespace-nowrap">
+                        Start Engine
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEPARATOR -->
+        <hr class="w-full border-t border-gray-300/40 mt-10 mb-12 scroll-element">
+
+        <!-- ELITE ARCHITECTURE & TECH STACK -->
+        <section class="max-w-6xl w-full mx-auto px-6 text-center scroll-element relative z-10">
+            <h3 class="text-[17px] font-bold text-gray-800 mb-1">Built with Elite Architecture</h3>
+            <p class="text-[13px] text-gray-500 font-medium mb-10 flex items-center justify-center gap-1.5">Made with <svg class="w-3.5 h-3.5 text-red-500 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/></svg> using these technologies</p>
+            
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-14 opacity-70 grayscale hover:grayscale-0 transition-all duration-500 mb-12">
+                <!-- FastAPI -->
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-[#009688]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2zm0 4.5l5.5 11h-11L12 6.5z"/></svg>
+                    <span class="font-bold text-[15px] text-gray-800">FastAPI</span>
+                </div>
+                <!-- Neo4j -->
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-[#018bff]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M10.5 8.5l-3 7M13.5 8.5l3 7M8.5 18h7"/></svg>
+                    <span class="font-bold text-[15px] text-gray-800">Neo4j</span>
+                </div>
+                <!-- SQLite -->
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-[#003B57]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    <span class="font-bold text-[15px] text-gray-800">SQLite</span>
+                </div>
+                <!-- Tailwind CSS -->
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-[#38b2ac]" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624C10.337,13.382,8.976,12,6.001,12z"/></svg>
+                    <span class="font-bold text-[15px] text-gray-800">Tailwind</span>
+                </div>
+                <!-- Three.js -->
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><path d="M12 2v20"/></svg>
+                    <span class="font-bold text-[15px] text-gray-800">Three.js</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEPARATOR -->
+        <hr class="w-full border-t border-gray-300/40 mb-10 scroll-element">
+
+        <!-- FOOTER -->
+        <footer class="w-full max-w-7xl mx-auto px-6 pb-12 relative z-10 scroll-element">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 font-bold text-xl text-gray-800 mb-3">
+                        <svg class="w-5 h-5 text-apple-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 
+                        M-Print
+                    </div>
+                    <p class="text-xs text-gray-500/80 max-w-sm leading-relaxed">The world's most advanced cognitive profiling engine. Map your behavior, adapt your learning, and master any skill using graph theory.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-4">Resources</h4>
+                    <ul class="space-y-2 text-xs font-medium text-gray-500/80">
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">API Reference</a></li>
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">Knowledge Graph</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-4">Company</h4>
+                    <ul class="space-y-2 text-xs font-medium text-gray-500/80">
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-apple-blue transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-300/40">
+                <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">© 2026 M-PRINT COGNITIVE INTELLIGENCE. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-4 text-gray-400">
+                    <a href="#" class="hover:text-apple-blue transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                    <a href="#" class="hover:text-apple-blue transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 3. ASSESSMENT VIEW (STRICTLY NO SCROLL) -->
+    <div id="view-assessment" class="hidden no-scroll-view p-4 md:p-6 items-center justify-center fade-in-up">
+        <div class="glass-card rounded-[2rem] p-6 md:p-10 w-full max-w-3xl flex flex-col h-full max-h-[600px] shadow-glass-hover relative">
+            <div id="assessment-content" class="flex-grow flex flex-col justify-center w-full"></div>
+        </div>
+    </div>
+
+    <!-- 4. RESULTS VIEW (STRICTLY NO SCROLL ON DESKTOP) -->
+    <div id="view-results" class="hidden no-scroll-view p-4 md:p-6 fade-in-up w-full max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-end mb-4 flex-shrink-0">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-textDark mb-1" id="res-topic">Results</h2>
+                <div id="res-subtitle-container" class="flex items-center gap-2"></div>
+            </div>
+            <button onclick="navigate('home')" class="apple-btn px-6 py-2.5 text-xs font-semibold hidden md:block">Done</button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4 flex-shrink-0">
+            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
+                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Confidence</p>
+                <p class="text-3xl font-bold tracking-tight text-apple-textDark" id="res-conf">0%</p>
+            </div>
+            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
+                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Accuracy</p>
+                <p class="text-3xl font-bold tracking-tight text-apple-textDark" id="res-acc">0%</p>
+            </div>
+            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
+                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Archetype</p>
+                <p class="text-xl md:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-apple-blue to-apple-purple truncate" id="res-style">Activist</p>
+            </div>
+            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center relative overflow-hidden">
+                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-2">Historical Velocity</p>
+                <div id="historical-data" class="w-full z-10 flex-grow flex items-center"></div>
+            </div>
+        </div>
+
+        <!-- Charts & Path (Flex Grow to fill remaining space) -->
+        <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0">
+            <!-- Path List -->
+            <div class="glass-card rounded-[1.5rem] p-5 lg:col-span-1 flex flex-col h-full overflow-hidden">
+                <h3 class="text-[10px] font-bold uppercase tracking-widest mb-3 text-apple-textLight flex-shrink-0">Graph Routing</h3>
+                <div class="flex-grow overflow-y-auto custom-scrollbar pr-2" id="res-path"></div>
+            </div>
+            
+            <!-- Charts Area -->
+            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 h-full overflow-hidden">
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-full items-center">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
+                    <div class="w-full flex-grow relative min-h-[150px]"><canvas id="radarChart"></canvas></div>
+                </div>
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-full">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
+                    <div class="w-full flex-grow relative min-h-[150px]"><canvas id="lineChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Done Button -->
+        <div class="mt-4 md:hidden flex-shrink-0">
+            <button onclick="navigate('home')" class="apple-btn w-full py-3 text-sm font-semibold">Done</button>
+        </div>
+    </div>
+</main>
+
+<script>
+// --- UTILS & GLOBAL STATE ---
+let sessionId = ""; 
+let currentTopic = ""; 
+let currentLevel = "Beginner"; 
+let questions = []; 
+let currentQ = 0; 
+let responses = []; 
+let startTime = 0; 
+let isLoginMode = true; 
+let radarChartInstance = null; 
+let lineChartInstance = null;
+
+function showToast(msg, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    const icon = type === 'error' 
+        ? `<svg class="w-5 h-5 text-red-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+        : `<svg class="w-5 h-5 text-apple-blue mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+    
+    toast.className = `toast`;
+    toast.innerHTML = `${icon} <span>${msg}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
+}
+
+// --- EXACT MATCH 3D WIREFRAME ENGINE ---
+function init3D() {
+    const container = document.getElementById('canvas-container'); 
+    if (!container) return;
+    const scene = new THREE.Scene();
+    
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+    if(width === 0 || height === 0) {
+        width = window.innerWidth;
+        height = window.innerHeight; 
+    }
+
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000); 
+    camera.position.z = 8;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); 
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
+    container.appendChild(renderer.domElement);
+    
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6, 
+        wireframe: true,
+        transparent: true,
+        opacity: 0.15
+    });
+
+    const geometry = new THREE.IcosahedronGeometry(4.5, 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, -2);
+    scene.add(mesh);
+    
+    function animate() { 
+        requestAnimationFrame(animate); 
+        mesh.rotation.x += 0.0005; 
+        mesh.rotation.y += 0.001; 
+        renderer.render(scene, camera); 
+    } 
+    animate();
+    
+    window.addEventListener('resize', () => {
+        if(!container) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if(w === 0 || h === 0) return;
+        camera.aspect = w / h; 
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+    });
+}
+
+// --- SCROLL ANIMATIONS ---
+function setupScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('scrolled-in');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.scroll-element').forEach(el => observer.observe(el));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    init3D();
+    setupScrollAnimations();
+});
+
+// --- PREMIUM SEGMENTED CONTROLS LOGIC ---
+function selectLevel(value, el) {
+    document.getElementById('test-level').value = value;
+    const btns = document.querySelectorAll('.level-btn');
+    btns.forEach(btn => {
+        btn.classList.remove('bg-white', 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]', 'text-apple-blue', 'scale-100');
+        btn.classList.add('text-gray-500', 'scale-95');
+    });
+    el.classList.remove('text-gray-500', 'scale-95');
+    el.classList.add('bg-white', 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]', 'text-apple-blue', 'scale-100');
+}
+
+function selectAuthLevel(value, el) {
+    document.getElementById('level').value = value;
+    const btns = document.querySelectorAll('.auth-level-btn');
+    btns.forEach(btn => {
+        btn.classList.remove('bg-white', 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]', 'text-apple-blue', 'scale-100');
+        btn.classList.add('text-gray-500', 'scale-95');
+    });
+    el.classList.remove('text-gray-500', 'scale-95');
+    el.classList.add('bg-white', 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]', 'text-apple-blue', 'scale-100');
+}
+
+// --- NAVIGATION & UI FLOW ---
+function navigate(view) {
+    ['view-auth', 'view-home', 'view-assessment', 'view-results'].forEach(v => {
+        const el = document.getElementById(v); if(el) el.classList.add('hidden');
+    });
+    document.getElementById(`view-${view}`).classList.remove('hidden');
+    
+    // Updated Navigation Links Logic
+    const navLinks = document.getElementById('nav-links');
+    if(view === 'auth') {
+        navLinks.classList.remove('md:flex');
+        navLinks.classList.add('hidden');
+    } else {
+        navLinks.classList.remove('hidden');
+        navLinks.classList.add('md:flex');
+    }
+    
+    const body = document.body;
+    if(view === 'assessment' || view === 'results') {
+        body.style.overflow = 'hidden';
+    } else {
+        body.style.overflow = 'auto';
+    }
+    document.getElementById('main-scroll-area').scrollTo(0, 0);
+}
+
+function scrollToElement(id) { const el = document.getElementById(id); if(el) document.getElementById('main-scroll-area').scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+function setAndStart(topicStr) { 
+    document.getElementById("topic").value = topicStr; 
+    scrollToElement('diagnostic-section'); 
+    document.getElementById('topic').focus(); 
+}
+function logout() { localStorage.clear(); isLoginMode = true; navigate('auth'); }
+function toggleAuthMode() { 
+    isLoginMode = !isLoginMode; 
+    document.getElementById('auth-title').innerText = isLoginMode ? "Welcome" : "Create Account"; 
+    document.getElementById('auth-sub').innerText = isLoginMode ? "Sign in to your workspace." : "Configure your profile."; 
+    document.getElementById('auth-btn').innerText = isLoginMode ? "Sign In" : "Continue"; 
+    
+    // Toggle the text at the bottom
+    const toggleBtn = document.getElementById('auth-toggle-btn');
+    if (isLoginMode) {
+        toggleBtn.innerHTML = `Don't have an account? <span class="text-apple-blue">Create one</span>`;
+    } else {
+        toggleBtn.innerHTML = `Already have an account? <span class="text-apple-blue">Log in</span>`;
+    }
+    
+    document.getElementById('signup-fields').classList.toggle('hidden', isLoginMode); 
+}
+
+// --- CORE AUTH LOGIC ---
+async function handleAuth() {
+    const btn = document.getElementById("auth-btn"); 
+    btn.innerHTML = "Authenticating..."; btn.disabled = true;
+
+    const endpoint = isLoginMode ? "login" : "signup";
+    const data = { email: document.getElementById("email").value, password: document.getElementById("password").value };
+    
+    if(!isLoginMode) { 
+        data.name = document.getElementById("name").value; 
+        data.level = document.getElementById("level").value; 
+        data.goal = document.getElementById("goal").value; 
+    }
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/${endpoint}`, { 
+            method: "POST", headers: {"Content-Type": "application/json"}, 
+            body: JSON.stringify(data) 
+        });
+        const result = await res.json();
+        
+        if (res.ok && !result.error) {
+            if (isLoginMode) { 
+                localStorage.setItem("access_token", result.access_token);
+                localStorage.setItem("user_id", result.user_id);
+                showToast("Identity Verified"); 
+                loadUserHistory(result.user_id); 
+                navigate('home'); 
+            }
+            else { showToast("Success! Please Sign In."); toggleAuthMode(); }
+        } else { showToast(result.error || "Authentication Failed", "error"); }
+    } catch (err) { showToast("Backend Connection Error", "error"); }
+    
+    btn.innerHTML = isLoginMode ? "Sign In" : "Continue"; btn.disabled = false;
+}
+
+// --- HISTORICAL DASHBOARD ---
+async function loadUserHistory(userId) {
+    if(!userId) return;
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/user-history?user_id=${userId}`);
+        const history = await res.json(); 
+        const grid = document.getElementById('history-grid'); 
+        const section = document.getElementById('user-progress-section');
+        
+        if (Object.keys(history).length === 0) { section.classList.add('hidden'); return; }
+        
+        section.classList.remove('hidden'); 
+        grid.innerHTML = '';
+        
+        Object.keys(history).forEach(topic => {
+            const topicData = history[topic]; 
+            const latestAcc = topicData[topicData.length - 1].accuracy; 
+            const cardId = `chart-${topic.replace(/\s+/g, '-')}`;
+            
+            grid.innerHTML += `
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="font-bold text-apple-textDark text-sm">${topic}</h4>
+                            <p class="text-[9px] text-apple-textLight uppercase font-bold tracking-widest mt-0.5">${topicData.length} Sessions</p>
+                        </div>
+                        <span class="text-lg font-bold ${latestAcc >= 70 ? 'text-apple-blue' : 'text-apple-purple'}">${latestAcc}%</span>
+                    </div>
+                    <div class="h-12 w-full"><canvas id="${cardId}"></canvas></div>
+                </div>`;
+            setTimeout(() => renderSparkline(cardId, topicData), 10);
+        });
+    } catch (e) { console.error("Persistence fetch error"); }
+}
+
+function renderSparkline(canvasId, data) {
+    const el = document.getElementById(canvasId); if (!el) return;
+    const ctx = el.getContext('2d'); const speeds = data.map(d => d.speed);
+    new Chart(ctx, { 
+        type: 'line', 
+        data: { labels: speeds, datasets: [{ data: speeds, borderColor: '#3168FF', borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true, backgroundColor: 'rgba(49, 104, 255, 0.1)' }] }, 
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, reverse: true } } } 
+    });
+}
+
+// --- DIAGNOSTIC SESSION LOGIC ---
+async function startSession() {
+    currentTopic = document.getElementById("topic").value.trim(); 
+    currentLevel = document.getElementById("test-level").value;
+    if (!currentTopic) return showToast("Target subject is required", "error");
+    
+    const startBtn = document.getElementById("start-btn");
+    startBtn.innerHTML = "Initializing..."; startBtn.disabled = true;
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`);
+        questions = await res.json();
+        if (questions && questions.length > 0) { 
+            currentQ = 0; responses = []; sessionId = "SESS_" + Date.now(); 
+            navigate('assessment'); showQuestion(); 
+        } else { showToast("No pathways for this topic", "error"); }
+    } catch(e) { showToast("Diagnostic Failed to Fetch", "error"); }
+    startBtn.innerHTML = "Start Engine"; startBtn.disabled = false;
+}
+
+function showQuestion() {
+    let q = questions[currentQ]; startTime = Date.now(); 
+    let progress = (currentQ / questions.length) * 100;
+    
+    let html = `
+        <div class="w-full mb-6 md:mb-8 flex-shrink-0 fade-in-up">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest">Question ${currentQ + 1} of ${questions.length}</span>
+                <span class="text-[10px] font-bold text-apple-blue bg-white/80 px-3 py-1 rounded-full border border-white shadow-sm">${currentTopic}</span>
+            </div>
+            <div class="w-full bg-black/5 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 h-full rounded-full transition-all duration-500 ease-out" style="width: ${progress}%"></div>
+            </div>
+        </div>
+        
+        <div class="flex-grow flex flex-col justify-center min-h-0">
+            <h3 class="text-xl md:text-3xl font-bold text-apple-textDark mb-6 md:mb-10 leading-snug tracking-tight text-center md:text-left">${q.question}</h3>
+            <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 max-h-[300px]">`;
+
+    q.options.forEach((opt, i) => { 
+        html += `
+            <button onclick="selectOption(${i})" class="w-full text-left px-5 py-4 option-btn text-apple-textDark font-medium flex justify-between items-center group text-sm md:text-base">
+                <span>${opt.text}</span>
+                <svg class="w-4 h-4 text-gray-300 group-hover:text-apple-blue transition-colors flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>`; 
+    });
+    
+    html += `</div></div>`;
+    document.getElementById("assessment-content").innerHTML = html;
+}
+
+function selectOption(index) {
+    const selected = questions[currentQ].options[index];
+    responses.push({ 
+        style: selected.style, 
+        type: questions[currentQ].type || "behavioral", 
+        difficulty: questions[currentQ].difficulty || 2, 
+        time: (Date.now() - startTime) / 1000, 
+        is_correct: selected.is_correct || false 
+    });
+
+    let lastResponse = {
+        correct: selected.is_correct,
+        time: (Date.now() - startTime) / 1000
+    };
+
+    let currentDifficulty = questions[currentQ].difficulty;
+    let nextDifficulty = decideNextQuestion(lastResponse, currentDifficulty);
+    let pool = questions.filter(q => q.difficulty === nextDifficulty);
+    let nextQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+    if (nextQuestion && (currentQ + 1) < questions.length) {
+        questions[currentQ + 1] = nextQuestion;
+    }
+
+    currentQ++;
+
+    if (currentQ < questions.length) {
+        showQuestion();
+    } else {
+        submitResults();
+    }
+}
+
+// 🧠 ADAPTIVE DECISION ENGINE
+function decideNextQuestion(lastResponse, currentDifficulty) {
+    if (!lastResponse.correct && lastResponse.time < 0.5) return Math.max(1, currentDifficulty - 1); 
+    if (lastResponse.correct && lastResponse.time > 1.5) return Math.min(5, currentDifficulty + 1); 
+    return currentDifficulty;
+}
+
+async function submitResults() {
+    document.getElementById("assessment-content").innerHTML = `
+        <div class="flex flex-col items-center justify-center h-full fade-in-up">
+            <svg class="animate-spin w-10 h-10 text-apple-blue mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <h3 class="text-xl font-bold tracking-tight mb-2 text-apple-textDark">Synthesizing Data</h3>
+            <p class="text-apple-textLight text-xs font-semibold uppercase tracking-widest">Generating Pathway</p>
+        </div>`;
+    
+    const userId = localStorage.getItem("user_id");
+    
+    try {
+        const payload = { session_id: sessionId, target_skill: currentTopic, target_level: currentLevel, responses: responses };
+        const resPath = await fetch("http://127.0.0.1:8000/generate-path", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) });
+        const result = await resPath.json();
+        
+        let tData = { status: "first_time" }; 
+        try { 
+            const tr = await fetch(`http://127.0.0.1:8000/topic-progress?topic=${encodeURIComponent(currentTopic)}`); 
+            if(tr.ok) tData = await tr.json(); 
+        } catch(e){}
+        
+        renderResults(result, tData);
+        
+        await fetch("http://127.0.0.1:8000/save-session", { 
+            method: "POST", headers: {"Content-Type": "application/json"}, 
+            body: JSON.stringify({ 
+                user_id: parseInt(userId), session_id: sessionId, 
+                topic: currentTopic, target_level: currentLevel, responses: responses 
+            }) 
+        });
+        
+        if(userId) loadUserHistory(userId);
+    } catch (e) { showToast("Processing Error", "error"); navigate('home'); }
+}
+
+// --- RESULTS RENDERING & VISUALIZATION ---
+function renderResults(result, tData) {
+    navigate('results'); 
+    document.getElementById('res-topic').innerText = currentTopic;
+    document.getElementById('res-conf').innerText = `${Math.round(result.mprint.confidence)}%`;
+    
+    let correct = responses.filter(r => r.is_correct).length;
+    let accuracy = responses.length > 0 ? (correct / responses.length) * 100 : 0;
+    let times = responses.map(r => r.time);
+    let avg = times.length > 0 ? times.reduce((a,b)=>a+b,0)/times.length : 0;
+    let variance = times.length > 0 ? times.reduce((a,b)=>a + Math.pow(b - avg, 2), 0)/times.length : 0;
+    let consistency = Math.max(0, 100 - (variance * 100));
+    let insight = "";
+    const currentSpeed = responses.length > 0 ? responses.reduce((a,b)=>a+b.time,0)/responses.length : 0;
+
+    if (accuracy > 70 && currentSpeed < 0.5) insight = "Fast and accurate.";
+    else if (accuracy > 70 && consistency > 70) insight = "Consistent learner.";
+    else if (accuracy < 50 && currentSpeed < 0.5) insight = "Fast but inaccurate.";
+    else insight = "Keep practicing.";
+
+    document.getElementById('res-acc').innerText = `${accuracy.toFixed(0)}%`;
+    document.getElementById('res-style').innerText = result.mprint.marker;
+    
+    const isReady = result.mprint.confidence >= 70;
+    document.getElementById('res-subtitle-container').innerHTML = `
+        <p class="text-apple-textLight text-sm font-medium">Level: ${currentLevel}</p>
+        <div class="flex items-center space-x-1.5 bg-white/50 px-2.5 py-0.5 rounded-full border border-white">
+            <span class="animate-pulse w-1.5 h-1.5 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'}"></span>
+            <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[10px] uppercase tracking-widest">${result.mprint.message}</span>
+        </div>`;
+
+    let histHtml = "";
+    if (tData.status === "first_time") {
+        histHtml = `<div class="w-full"><p class="text-[10px] text-apple-textLight font-semibold">Initial Benchmark:</p><p class="text-lg font-bold text-apple-textDark">${currentSpeed.toFixed(1)}s</p></div>`;
+    } else {
+        const improved = tData.improvement > 0;
+        histHtml = `
+            <div class="w-full flex justify-between items-center">
+                <div><p class="text-[9px] font-bold text-apple-textLight">PAST</p><p class="text-base font-bold text-apple-textDark">${tData.previous_speed.toFixed(1)}s</p></div>
+                <div class="h-6 w-px bg-gray-200"></div>
+                <div><p class="text-[9px] font-bold text-apple-textLight">CURRENT</p><p class="text-base font-bold text-apple-blue">${currentSpeed.toFixed(1)}s</p></div>
+                <div class="text-xs font-bold ${improved ? 'text-apple-blue' : 'text-apple-purple'} ml-2">
+                    ${improved ? '▲' : '▼'} ${Math.abs(tData.improvement).toFixed(1)}s
+                </div>
+            </div>`;
+    }
+    document.getElementById('historical-data').innerHTML = histHtml;
+    
+    const pathSteps = result.paths.length > 0 ? (Array.isArray(result.paths[0]) ? result.paths[0] : result.paths) : ["Data not found in graph"];
+    let pathHtml = `<ul class="space-y-3">`; 
+    pathSteps.forEach((step, idx) => { 
+        pathHtml += `
+            <li class="flex items-center bg-white/50 p-2.5 rounded-xl border border-white/60">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-apple-blue/10 text-apple-blue text-[10px] font-bold flex items-center justify-center mr-3">${idx+1}</span>
+                <span class="text-apple-textDark font-medium text-sm">${step}</span>
+            </li>`; 
+    });
+    document.getElementById('res-path').innerHTML = pathHtml + `</ul>`; 
+    
+    drawCharts(result, tData);
+}
+
+function drawCharts(result, tData) {
+    if(radarChartInstance) radarChartInstance.destroy(); if(lineChartInstance) lineChartInstance.destroy();
+    
+    let dist = result.style_distribution || {};
+    let total = Object.values(dist).reduce((a,b)=>a+b,0) || 1;
+
+    const rData = [
+        (dist["Activist"] || 0) / total * 100,
+        (dist["Reflector"] || 0) / total * 100,
+        (dist["Theorist"] || 0) / total * 100,
+        (dist["Pragmatist"] || 0) / total * 100
+    ];
+    
+    radarChartInstance = new Chart(document.getElementById('radarChart'), { 
+        type: 'radar', 
+        data: { labels: ['Activist', 'Reflector', 'Theorist', 'Pragmatic'], datasets: [{ data: rData, backgroundColor: 'rgba(49, 104, 255, 0.15)', borderColor: '#3168FF', borderWidth: 2, pointBackgroundColor: '#3168FF', pointRadius: 2 }] }, 
+        options: { maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' }, angleLines: { color: 'rgba(0,0,0,0.05)' } } }, plugins: { legend: { display: false } } } 
+    });
+    
+    let speeds = tData.history && tData.history.length > 0 ? tData.history.map(h => h.speed) : responses.map(r => r.time);
+    let labels = speeds.map((_, i) => `S${i+1}`);
+    
+    lineChartInstance = new Chart(document.getElementById('lineChart'), { 
+        type: 'line', 
+        data: { labels: labels, datasets: [{ data: speeds, borderColor: '#9A35FF', tension: 0.4, fill: true, backgroundColor: 'rgba(154, 53, 255, 0.1)', borderWidth: 2, pointBackgroundColor: '#fff', pointBorderColor: '#9A35FF', pointRadius: 3 }] }, 
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false, grid: {display: false} }, x: { grid: { color: 'rgba(0,0,0,0.05)'}, ticks: {font: {size: 10}} } } } 
+    });
+}
+
+// --- BOOT UP ---
+window.onload = () => { 
+    const savedUser = localStorage.getItem("user_id"); 
+    if(savedUser) { 
+        loadUserHistory(savedUser); navigate('home'); 
+    } else {
+        navigate('auth'); 
+    }
+};
+</script>
+</body>
+</html>

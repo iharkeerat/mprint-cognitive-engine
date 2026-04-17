@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "DS_Q1",
+    "type": "mcq",
+    "question": "You start learning Data Structures. What do you do first?",
+    "options": [
+      {"text": "Solve coding problems immediately", "style": "Activist"},
+      {"text": "Watch concept tutorials first", "style": "Reflector"},
+      {"text": "Understand theory and definitions deeply", "style": "Theorist"},
+      {"text": "See real-world use of data structures", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q2",
+    "type": "task",
+    "prompt": "You need to learn arrays quickly. What’s your approach?",
+    "options": [
+      {"content": "Start coding array problems", "style": "Activist"},
+      {"content": "Observe examples step-by-step", "style": "Reflector"},
+      {"content": "Understand memory and indexing logic", "style": "Theorist"},
+      {"content": "Look at where arrays are used in apps", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q3",
+    "type": "mcq",
+    "question": "When learning linked lists, you prefer:",
+    "options": [
+      {"text": "Implementing them directly", "style": "Activist"},
+      {"text": "Watching visual explanations", "style": "Reflector"},
+      {"text": "Understanding pointer logic deeply", "style": "Theorist"},
+      {"text": "Seeing practical use cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q4",
+    "type": "task",
+    "prompt": "You’re stuck on a stack problem. What do you do?",
+    "options": [
+      {"content": "Try multiple solutions quickly", "style": "Activist"},
+      {"content": "Look at solved examples", "style": "Reflector"},
+      {"content": "Break problem into logical steps", "style": "Theorist"},
+      {"content": "Search similar real problems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q5",
+    "type": "mcq",
+    "question": "When solving problems, your instinct is:",
+    "options": [
+      {"text": "Jump into coding", "style": "Activist"},
+      {"text": "Think and observe patterns", "style": "Reflector"},
+      {"text": "Analyze logic before coding", "style": "Theorist"},
+      {"text": "Think of real-world analogy", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q6",
+    "type": "task",
+    "prompt": "You want to learn trees. What’s your first step?",
+    "options": [
+      {"content": "Code tree traversals", "style": "Activist"},
+      {"content": "Watch tree visualizations", "style": "Reflector"},
+      {"content": "Understand recursion logic deeply", "style": "Theorist"},
+      {"content": "See where trees are used in real systems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q7",
+    "type": "mcq",
+    "question": "When debugging code, you:",
+    "options": [
+      {"text": "Try fixes quickly", "style": "Activist"},
+      {"text": "Observe error patterns", "style": "Reflector"},
+      {"text": "Trace logic step-by-step", "style": "Theorist"},
+      {"text": "Check practical examples", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q8",
+    "type": "task",
+    "prompt": "You want to improve problem-solving speed. What do you do?",
+    "options": [
+      {"content": "Solve many problems fast", "style": "Activist"},
+      {"content": "Review solved problems", "style": "Reflector"},
+      {"content": "Understand patterns deeply", "style": "Theorist"},
+      {"content": "Apply concepts in real scenarios", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q9",
+    "type": "mcq",
+    "question": "When learning algorithms, you focus on:",
+    "options": [
+      {"text": "Implementation", "style": "Activist"},
+      {"text": "Observing examples", "style": "Reflector"},
+      {"text": "Understanding complexity and logic", "style": "Theorist"},
+      {"text": "Real-world applications", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q10",
+    "type": "mcq",
+    "question": "You start recursion. What’s your instinct?",
+    "options": [
+      {"text": "Try coding recursion", "style": "Activist"},
+      {"text": "Watch recursive flow examples", "style": "Reflector"},
+      {"text": "Understand base case logic deeply", "style": "Theorist"},
+      {"text": "See where recursion is used", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q11",
+    "type": "task",
+    "prompt": "You need to optimize a solution. What do you do?",
+    "options": [
+      {"content": "Try faster implementations", "style": "Activist"},
+      {"content": "Review existing solutions", "style": "Reflector"},
+      {"content": "Analyze time complexity", "style": "Theorist"},
+      {"content": "Compare real-world efficiency", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DS_Q12",
+    "type": "mcq",
+    "question": "When learning DS, what matters most?",
+    "options": [
+      {"text": "Practice problems", "style": "Activist"},
+      {"text": "Understanding examples", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "Practical usage", "style": "Pragmatist"}
+    ]
+  }
+]

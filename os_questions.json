@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "OS_Q1",
+    "type": "mcq",
+    "question": "You start learning Operating Systems. What do you do first?",
+    "options": [
+      {"text": "Try system-level commands directly", "style": "Activist"},
+      {"text": "Watch OS concept videos", "style": "Reflector"},
+      {"text": "Understand OS architecture deeply", "style": "Theorist"},
+      {"text": "See how OS works in real systems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q2",
+    "type": "task",
+    "prompt": "You want to understand processes and threads. What’s your approach?",
+    "options": [
+      {"content": "Experiment with programs", "style": "Activist"},
+      {"content": "Observe visual explanations", "style": "Reflector"},
+      {"content": "Study process lifecycle deeply", "style": "Theorist"},
+      {"content": "See how apps manage processes", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q3",
+    "type": "mcq",
+    "question": "When learning CPU scheduling, you prefer:",
+    "options": [
+      {"text": "Trying scheduling examples", "style": "Activist"},
+      {"text": "Watching scheduling simulations", "style": "Reflector"},
+      {"text": "Understanding algorithms deeply", "style": "Theorist"},
+      {"text": "Seeing real-world scheduling use", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q4",
+    "type": "task",
+    "prompt": "You need to learn memory management. What do you do?",
+    "options": [
+      {"content": "Experiment with memory usage", "style": "Activist"},
+      {"content": "Observe diagrams and visuals", "style": "Reflector"},
+      {"content": "Understand paging and segmentation logic", "style": "Theorist"},
+      {"content": "See how apps handle memory", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q5",
+    "type": "mcq",
+    "question": "When facing a deadlock concept, you:",
+    "options": [
+      {"text": "Try examples directly", "style": "Activist"},
+      {"text": "Watch explanations", "style": "Reflector"},
+      {"text": "Analyze conditions deeply", "style": "Theorist"},
+      {"text": "Look at real-world cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q6",
+    "type": "task",
+    "prompt": "You want to understand file systems. What’s your first step?",
+    "options": [
+      {"content": "Explore file operations", "style": "Activist"},
+      {"content": "Observe structure diagrams", "style": "Reflector"},
+      {"content": "Study file system logic deeply", "style": "Theorist"},
+      {"content": "See how storage works in real systems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q7",
+    "type": "mcq",
+    "question": "When debugging system issues, you:",
+    "options": [
+      {"text": "Try fixes quickly", "style": "Activist"},
+      {"text": "Observe logs and patterns", "style": "Reflector"},
+      {"text": "Trace root cause logically", "style": "Theorist"},
+      {"text": "Check real-world solutions", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q8",
+    "type": "task",
+    "prompt": "You want to learn synchronization. What do you do?",
+    "options": [
+      {"content": "Implement basic locks", "style": "Activist"},
+      {"content": "Watch visual demos", "style": "Reflector"},
+      {"content": "Understand critical section deeply", "style": "Theorist"},
+      {"content": "See concurrency in real apps", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q9",
+    "type": "mcq",
+    "question": "When studying OS, you focus on:",
+    "options": [
+      {"text": "Hands-on commands", "style": "Activist"},
+      {"text": "Understanding flow", "style": "Reflector"},
+      {"text": "Concept depth", "style": "Theorist"},
+      {"text": "Real-world behavior", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q10",
+    "type": "mcq",
+    "question": "You start learning Linux. What do you do?",
+    "options": [
+      {"text": "Use terminal commands", "style": "Activist"},
+      {"text": "Watch tutorials", "style": "Reflector"},
+      {"text": "Understand system internals", "style": "Theorist"},
+      {"text": "See real-world usage", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q11",
+    "type": "task",
+    "prompt": "You need to optimize system performance. What do you do?",
+    "options": [
+      {"content": "Try quick tweaks", "style": "Activist"},
+      {"content": "Observe system behavior", "style": "Reflector"},
+      {"content": "Analyze performance metrics deeply", "style": "Theorist"},
+      {"content": "Study real-world optimizations", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "OS_Q12",
+    "type": "mcq",
+    "question": "When learning OS, what matters most?",
+    "options": [
+      {"text": "Practice commands", "style": "Activist"},
+      {"text": "Understanding examples", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "Real-world application", "style": "Pragmatist"}
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "DB_Q1",
+    "type": "mcq",
+    "question": "You start learning Databases. What do you do first?",
+    "options": [
+      {"text": "Write SQL queries immediately", "style": "Activist"},
+      {"text": "Watch tutorials on database concepts", "style": "Reflector"},
+      {"text": "Understand relational theory deeply", "style": "Theorist"},
+      {"text": "See how databases are used in real apps", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q2",
+    "type": "task",
+    "prompt": "You are given a messy dataset. What’s your first step?",
+    "options": [
+      {"content": "Start querying data directly", "style": "Activist"},
+      {"content": "Observe dataset structure first", "style": "Reflector"},
+      {"content": "Understand schema and relationships", "style": "Theorist"},
+      {"content": "Think how data is used in real scenarios", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q3",
+    "type": "mcq",
+    "question": "When learning SQL joins, you prefer:",
+    "options": [
+      {"text": "Trying joins in queries", "style": "Activist"},
+      {"text": "Watching visual examples", "style": "Reflector"},
+      {"text": "Understanding join logic deeply", "style": "Theorist"},
+      {"text": "Seeing real-world use cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q4",
+    "type": "task",
+    "prompt": "You need to design a database for an app. What do you do?",
+    "options": [
+      {"content": "Start creating tables quickly", "style": "Activist"},
+      {"content": "Look at existing designs", "style": "Reflector"},
+      {"content": "Plan schema and relationships carefully", "style": "Theorist"},
+      {"content": "Think about real user requirements", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q5",
+    "type": "mcq",
+    "question": "When learning normalization, you:",
+    "options": [
+      {"text": "Apply normalization rules directly", "style": "Activist"},
+      {"text": "Observe examples", "style": "Reflector"},
+      {"text": "Understand theory deeply", "style": "Theorist"},
+      {"text": "See impact in real databases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q6",
+    "type": "task",
+    "prompt": "Your query is slow. What’s your approach?",
+    "options": [
+      {"content": "Try different queries quickly", "style": "Activist"},
+      {"content": "Analyze query behavior", "style": "Reflector"},
+      {"content": "Study indexing and optimization theory", "style": "Theorist"},
+      {"content": "Check real-world performance techniques", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q7",
+    "type": "mcq",
+    "question": "When debugging SQL errors, you:",
+    "options": [
+      {"text": "Try quick fixes", "style": "Activist"},
+      {"text": "Look at working examples", "style": "Reflector"},
+      {"text": "Trace query logic step-by-step", "style": "Theorist"},
+      {"text": "Search similar real problems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q8",
+    "type": "task",
+    "prompt": "You want to learn indexing. What do you do?",
+    "options": [
+      {"content": "Create indexes and test", "style": "Activist"},
+      {"content": "Watch demonstrations", "style": "Reflector"},
+      {"content": "Understand how indexing works internally", "style": "Theorist"},
+      {"content": "See performance improvement in real systems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q9",
+    "type": "mcq",
+    "question": "When working with data, you focus on:",
+    "options": [
+      {"text": "Quick queries", "style": "Activist"},
+      {"text": "Understanding data flow", "style": "Reflector"},
+      {"text": "Data structure and relationships", "style": "Theorist"},
+      {"text": "Business use of data", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q10",
+    "type": "mcq",
+    "question": "You start a database project. What do you do first?",
+    "options": [
+      {"text": "Start coding tables", "style": "Activist"},
+      {"text": "Study similar projects", "style": "Reflector"},
+      {"text": "Design schema logically", "style": "Theorist"},
+      {"text": "Understand real-world requirements", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q11",
+    "type": "task",
+    "prompt": "You need to ensure data consistency. What do you do?",
+    "options": [
+      {"content": "Apply constraints quickly", "style": "Activist"},
+      {"content": "Observe examples of consistency", "style": "Reflector"},
+      {"content": "Understand ACID properties deeply", "style": "Theorist"},
+      {"content": "See how real systems maintain consistency", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "DB_Q12",
+    "type": "mcq",
+    "question": "When learning databases, what matters most?",
+    "options": [
+      {"text": "Practice queries", "style": "Activist"},
+      {"text": "Understanding examples", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "Real-world usage", "style": "Pragmatist"}
+    ]
+  }
+]

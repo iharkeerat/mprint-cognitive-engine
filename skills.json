@@ -1,0 +1,42 @@
+{
+  "skills": [
+    {"name": "Variables"},
+    {"name": "Loops"},
+    {"name": "Functions"},
+    {"name": "Python"},
+    {"name": "Data Structures"},
+    {"name": "Recursion"},
+    {"name": "Algorithms"},
+    {"name": "Machine Learning"},
+
+    {"name": "Networking Basics"},
+    {"name": "Cryptography"},
+    {"name": "Cyber Security"},
+
+    {"name": "Client-Server Model"},
+    {"name": "Load Balancing"},
+    {"name": "System Design"},
+
+    {"name": "HTML/CSS"},
+    {"name": "JavaScript"},
+    {"name": "React Architecture"}
+  ],
+  "relationships": [
+    {"from": "Variables", "to": "Loops"},
+    {"from": "Loops", "to": "Functions"},
+    {"from": "Functions", "to": "Python"},
+    {"from": "Python", "to": "Data Structures"},
+    {"from": "Data Structures", "to": "Algorithms"},
+    {"from": "Recursion", "to": "Algorithms"},
+    {"from": "Algorithms", "to": "Machine Learning"},
+
+    {"from": "Networking Basics", "to": "Cyber Security"},
+    {"from": "Cryptography", "to": "Cyber Security"},
+
+    {"from": "Client-Server Model", "to": "System Design"},
+    {"from": "Load Balancing", "to": "System Design"},
+
+    {"from": "HTML/CSS", "to": "JavaScript"},
+    {"from": "JavaScript", "to": "React Architecture"}
+  ]
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "Q1",
+    "type": "mcq",
+    "question": "You open YouTube to learn a new coding concept. What do you click first?",
+    "options": [
+      {"text": "A quick project tutorial to build something", "style": "Activist", "weight": 2},
+      {"text": "A detailed lecture explaining step-by-step", "style": "Reflector", "weight": 2},
+      {"text": "A deep dive into underlying concepts", "style": "Theorist", "weight": 2},
+      {"text": "A real-world application demo", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q2",
+    "type": "task",
+    "prompt": "You have 30 minutes before a coding test. What do you choose?",
+    "options": [
+      {"content": "Solve as many practice problems as possible", "style": "Activist"},
+      {"content": "Revise notes and previous examples", "style": "Reflector"},
+      {"content": "Understand key concepts and logic again", "style": "Theorist"},
+      {"content": "Focus on past exam questions", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "Q3",
+    "type": "mcq",
+    "question": "You start using a new app. What’s your first move?",
+    "options": [
+      {"text": "Explore features randomly", "style": "Activist", "weight": 2},
+      {"text": "Observe interface carefully", "style": "Reflector", "weight": 2},
+      {"text": "Understand how it works internally", "style": "Theorist", "weight": 2},
+      {"text": "Check how it helps in real tasks", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q4",
+    "type": "task",
+    "prompt": "You want to learn APIs. What do you pick?",
+    "options": [
+      {"content": "Start calling APIs in Python", "style": "Activist"},
+      {"content": "Watch API workflow videos", "style": "Reflector"},
+      {"content": "Read about HTTP and protocols", "style": "Theorist"},
+      {"content": "See real-world API projects", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "Q5",
+    "type": "mcq",
+    "question": "During a lecture, you are most likely to:",
+    "options": [
+      {"text": "Ask questions and interact", "style": "Activist", "weight": 2},
+      {"text": "Listen and observe quietly", "style": "Reflector", "weight": 2},
+      {"text": "Mentally connect ideas logically", "style": "Theorist", "weight": 2},
+      {"text": "Think where this can be applied", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q6",
+    "type": "task",
+    "prompt": "You need to understand recursion quickly. What do you choose?",
+    "options": [
+      {"content": "Code recursion examples", "style": "Activist"},
+      {"content": "Watch visual recursion trees", "style": "Reflector"},
+      {"content": "Study mathematical explanation", "style": "Theorist"},
+      {"content": "Look at real-life use cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "Q7",
+    "type": "mcq",
+    "question": "When stuck on a problem, what do you naturally do?",
+    "options": [
+      {"text": "Try different solutions quickly", "style": "Activist", "weight": 2},
+      {"text": "Pause and rethink approach", "style": "Reflector", "weight": 2},
+      {"text": "Break it into logical steps", "style": "Theorist", "weight": 2},
+      {"text": "Look for a similar solved problem", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q8",
+    "type": "task",
+    "prompt": "You’re learning Machine Learning. What’s your first step?",
+    "options": [
+      {"content": "Train a simple model", "style": "Activist"},
+      {"content": "Watch model workflow videos", "style": "Reflector"},
+      {"content": "Understand math behind models", "style": "Theorist"},
+      {"content": "Explore industry use cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "Q9",
+    "type": "mcq",
+    "question": "You get feedback on your work. You prefer it to be:",
+    "options": [
+      {"text": "Quick and direct", "style": "Activist", "weight": 2},
+      {"text": "Detailed and thoughtful", "style": "Reflector", "weight": 2},
+      {"text": "Structured and logical", "style": "Theorist", "weight": 2},
+      {"text": "Actionable and practical", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q10",
+    "type": "mcq",
+    "question": "You’re starting a new project. What’s your instinct?",
+    "options": [
+      {"text": "Start building immediately", "style": "Activist", "weight": 2},
+      {"text": "Observe and plan quietly", "style": "Reflector", "weight": 2},
+      {"text": "Design structure and logic", "style": "Theorist", "weight": 2},
+      {"text": "Focus on end-use outcome", "style": "Pragmatist", "weight": 2}
+    ]
+  },
+  {
+    "question_id": "Q11",
+    "type": "task",
+    "prompt": "You want to learn databases. What do you pick?",
+    "options": [
+      {"content": "Write SQL queries directly", "style": "Activist"},
+      {"content": "Study ER diagrams", "style": "Reflector"},
+      {"content": "Learn normalization theory", "style": "Theorist"},
+      {"content": "Analyze real-world database systems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "Q12",
+    "type": "mcq",
+    "question": "When learning something new, what matters most to you?",
+    "options": [
+      {"text": "Getting hands-on quickly", "style": "Activist", "weight": 2},
+      {"text": "Understanding through observation", "style": "Reflector", "weight": 2},
+      {"text": "Clarity of concepts", "style": "Theorist", "weight": 2},
+      {"text": "Practical usefulness", "style": "Pragmatist", "weight": 2}
+    ]
+  }
+]

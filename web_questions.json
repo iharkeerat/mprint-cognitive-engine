@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "WEB_Q1",
+    "type": "mcq",
+    "question": "You start learning Web Development. What do you do first?",
+    "options": [
+      {"text": "Start building a website immediately", "style": "Activist"},
+      {"text": "Watch full course tutorials", "style": "Reflector"},
+      {"text": "Understand how web works (HTTP, DOM)", "style": "Theorist"},
+      {"text": "Explore real websites and designs", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q2",
+    "type": "task",
+    "prompt": "You want to learn HTML & CSS. What’s your approach?",
+    "options": [
+      {"content": "Start coding pages directly", "style": "Activist"},
+      {"content": "Observe design examples", "style": "Reflector"},
+      {"content": "Understand structure and layout deeply", "style": "Theorist"},
+      {"content": "See how websites are built in real life", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q3",
+    "type": "mcq",
+    "question": "When learning JavaScript, you prefer:",
+    "options": [
+      {"text": "Writing scripts immediately", "style": "Activist"},
+      {"text": "Watching tutorials step-by-step", "style": "Reflector"},
+      {"text": "Understanding logic and concepts deeply", "style": "Theorist"},
+      {"text": "Seeing real project usage", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q4",
+    "type": "task",
+    "prompt": "You need to design a UI. What do you do?",
+    "options": [
+      {"content": "Start designing quickly", "style": "Activist"},
+      {"content": "Look at existing UI designs", "style": "Reflector"},
+      {"content": "Understand design principles deeply", "style": "Theorist"},
+      {"content": "Think about user experience", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q5",
+    "type": "mcq",
+    "question": "When debugging a website, you:",
+    "options": [
+      {"text": "Try quick fixes", "style": "Activist"},
+      {"text": "Observe errors carefully", "style": "Reflector"},
+      {"text": "Trace logic step-by-step", "style": "Theorist"},
+      {"text": "Check real-world solutions", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q6",
+    "type": "task",
+    "prompt": "You want to learn React. What do you do first?",
+    "options": [
+      {"content": "Start building components", "style": "Activist"},
+      {"content": "Watch tutorials and examples", "style": "Reflector"},
+      {"content": "Understand component architecture deeply", "style": "Theorist"},
+      {"content": "See real apps built with React", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q7",
+    "type": "mcq",
+    "question": "When creating a project, you focus on:",
+    "options": [
+      {"text": "Building fast", "style": "Activist"},
+      {"text": "Observing patterns", "style": "Reflector"},
+      {"text": "Clean logic and structure", "style": "Theorist"},
+      {"text": "User experience", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q8",
+    "type": "task",
+    "prompt": "You want to improve frontend skills. What do you do?",
+    "options": [
+      {"content": "Build multiple projects", "style": "Activist"},
+      {"content": "Study existing designs", "style": "Reflector"},
+      {"content": "Understand layout systems deeply", "style": "Theorist"},
+      {"content": "Analyze real websites", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q9",
+    "type": "mcq",
+    "question": "When learning backend, you focus on:",
+    "options": [
+      {"text": "Building APIs quickly", "style": "Activist"},
+      {"text": "Observing examples", "style": "Reflector"},
+      {"text": "Understanding system logic", "style": "Theorist"},
+      {"text": "Real-world applications", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q10",
+    "type": "mcq",
+    "question": "You start a web project. What do you do first?",
+    "options": [
+      {"text": "Start coding", "style": "Activist"},
+      {"text": "Look at similar projects", "style": "Reflector"},
+      {"text": "Plan architecture", "style": "Theorist"},
+      {"text": "Define user needs", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q11",
+    "type": "task",
+    "prompt": "You need to optimize performance. What do you do?",
+    "options": [
+      {"content": "Try quick fixes", "style": "Activist"},
+      {"content": "Analyze performance data", "style": "Reflector"},
+      {"content": "Understand optimization logic", "style": "Theorist"},
+      {"content": "Study real-world techniques", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "WEB_Q12",
+    "type": "mcq",
+    "question": "When learning Web Dev, what matters most?",
+    "options": [
+      {"text": "Building projects", "style": "Activist"},
+      {"text": "Understanding examples", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "User experience", "style": "Pragmatist"}
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "CYB_Q1",
+    "type": "mcq",
+    "question": "You start learning Cyber Security. What do you do first?",
+    "options": [
+      {"text": "Try hacking tools immediately", "style": "Activist"},
+      {"text": "Watch cybersecurity tutorials", "style": "Reflector"},
+      {"text": "Understand security principles deeply", "style": "Theorist"},
+      {"text": "See real-world cyber attacks", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q2",
+    "type": "task",
+    "prompt": "You find a vulnerability in a system. What’s your first move?",
+    "options": [
+      {"content": "Test it immediately", "style": "Activist"},
+      {"content": "Observe how others handled similar issues", "style": "Reflector"},
+      {"content": "Analyze the root cause deeply", "style": "Theorist"},
+      {"content": "Understand its real-world impact", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q3",
+    "type": "mcq",
+    "question": "When learning about attacks like phishing, you prefer:",
+    "options": [
+      {"text": "Trying simulations", "style": "Activist"},
+      {"text": "Watching attack scenarios", "style": "Reflector"},
+      {"text": "Understanding how attacks work internally", "style": "Theorist"},
+      {"text": "Seeing real-world cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q4",
+    "type": "task",
+    "prompt": "You need to secure a web app. What do you do first?",
+    "options": [
+      {"content": "Start applying security fixes", "style": "Activist"},
+      {"content": "Look at secure app examples", "style": "Reflector"},
+      {"content": "Understand vulnerabilities deeply", "style": "Theorist"},
+      {"content": "Think about real-world threats", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q5",
+    "type": "mcq",
+    "question": "When learning encryption, you:",
+    "options": [
+      {"text": "Try encryption tools", "style": "Activist"},
+      {"text": "Observe examples", "style": "Reflector"},
+      {"text": "Understand cryptography deeply", "style": "Theorist"},
+      {"text": "See how it’s used in real apps", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q6",
+    "type": "task",
+    "prompt": "You detect unusual system behavior. What’s your approach?",
+    "options": [
+      {"content": "Act quickly to fix it", "style": "Activist"},
+      {"content": "Observe logs carefully", "style": "Reflector"},
+      {"content": "Analyze root cause deeply", "style": "Theorist"},
+      {"content": "Compare with real attack patterns", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q7",
+    "type": "mcq",
+    "question": "When debugging security issues, you:",
+    "options": [
+      {"text": "Try quick fixes", "style": "Activist"},
+      {"text": "Observe patterns", "style": "Reflector"},
+      {"text": "Trace vulnerabilities logically", "style": "Theorist"},
+      {"text": "Study real-world incidents", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q8",
+    "type": "task",
+    "prompt": "You want to learn ethical hacking. What do you do first?",
+    "options": [
+      {"content": "Start using hacking tools", "style": "Activist"},
+      {"content": "Watch guided tutorials", "style": "Reflector"},
+      {"content": "Understand attack mechanisms deeply", "style": "Theorist"},
+      {"content": "Study real-world breaches", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q9",
+    "type": "mcq",
+    "question": "When thinking about security, you focus on:",
+    "options": [
+      {"text": "Quick protection methods", "style": "Activist"},
+      {"text": "Understanding patterns", "style": "Reflector"},
+      {"text": "Deep system vulnerabilities", "style": "Theorist"},
+      {"text": "Real-world risks", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q10",
+    "type": "mcq",
+    "question": "You start a security project. What do you do first?",
+    "options": [
+      {"text": "Start testing system", "style": "Activist"},
+      {"text": "Study similar projects", "style": "Reflector"},
+      {"text": "Understand system architecture", "style": "Theorist"},
+      {"text": "Identify real-world threats", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q11",
+    "type": "task",
+    "prompt": "You need to prevent attacks. What’s your approach?",
+    "options": [
+      {"content": "Apply quick security measures", "style": "Activist"},
+      {"content": "Observe past attack patterns", "style": "Reflector"},
+      {"content": "Design strong defense logic", "style": "Theorist"},
+      {"content": "Study real-world defense strategies", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "CYB_Q12",
+    "type": "mcq",
+    "question": "When learning Cyber Security, what matters most?",
+    "options": [
+      {"text": "Hands-on tools", "style": "Activist"},
+      {"text": "Understanding examples", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "Real-world application", "style": "Pragmatist"}
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "question_id": "ML_Q1",
+    "type": "mcq",
+    "question": "You start learning Machine Learning. What do you do first?",
+    "options": [
+      {"text": "Start coding models in Python", "style": "Activist"},
+      {"text": "Watch full ML workflow tutorials", "style": "Reflector"},
+      {"text": "Understand math behind algorithms", "style": "Theorist"},
+      {"text": "Explore real-world ML applications", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q2",
+    "type": "task",
+    "prompt": "You have a dataset but no idea what to do. What’s your first step?",
+    "options": [
+      {"content": "Try applying a model directly", "style": "Activist"},
+      {"content": "Observe examples of similar datasets", "style": "Reflector"},
+      {"content": "Understand data structure and theory", "style": "Theorist"},
+      {"content": "Look at real-world use of similar data", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q3",
+    "type": "mcq",
+    "question": "When learning about algorithms like Linear Regression, you prefer:",
+    "options": [
+      {"text": "Implementing it quickly", "style": "Activist"},
+      {"text": "Watching step-by-step explanation", "style": "Reflector"},
+      {"text": "Deriving formulas and logic", "style": "Theorist"},
+      {"text": "Seeing business use cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q4",
+    "type": "task",
+    "prompt": "You need to learn model evaluation. What do you choose?",
+    "options": [
+      {"content": "Try different metrics in code", "style": "Activist"},
+      {"content": "Watch evaluation tutorials", "style": "Reflector"},
+      {"content": "Understand formulas like precision/recall", "style": "Theorist"},
+      {"content": "Study how companies evaluate models", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q5",
+    "type": "mcq",
+    "question": "When you see a complex ML model, your instinct is:",
+    "options": [
+      {"text": "Experiment with it immediately", "style": "Activist"},
+      {"text": "Observe how it works step-by-step", "style": "Reflector"},
+      {"text": "Break down its internal logic", "style": "Theorist"},
+      {"text": "Understand its practical impact", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q6",
+    "type": "task",
+    "prompt": "You want to understand overfitting. What do you do?",
+    "options": [
+      {"content": "Train models and observe results", "style": "Activist"},
+      {"content": "Watch visual explanations", "style": "Reflector"},
+      {"content": "Study bias-variance theory", "style": "Theorist"},
+      {"content": "Look at real-world failure cases", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q7",
+    "type": "mcq",
+    "question": "When stuck in ML code, you:",
+    "options": [
+      {"text": "Try multiple fixes quickly", "style": "Activist"},
+      {"text": "Pause and analyze examples", "style": "Reflector"},
+      {"text": "Debug logically step-by-step", "style": "Theorist"},
+      {"text": "Search for similar real problems", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q8",
+    "type": "task",
+    "prompt": "You want to learn neural networks. What’s your first move?",
+    "options": [
+      {"content": "Build a simple NN model", "style": "Activist"},
+      {"content": "Watch architecture videos", "style": "Reflector"},
+      {"content": "Understand backpropagation deeply", "style": "Theorist"},
+      {"content": "Explore AI applications like ChatGPT", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q9",
+    "type": "mcq",
+    "question": "During ML learning, you value most:",
+    "options": [
+      {"text": "Hands-on practice", "style": "Activist"},
+      {"text": "Observation and reflection", "style": "Reflector"},
+      {"text": "Concept clarity", "style": "Theorist"},
+      {"text": "Practical usefulness", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q10",
+    "type": "mcq",
+    "question": "You start a Kaggle project. What do you do first?",
+    "options": [
+      {"text": "Start coding immediately", "style": "Activist"},
+      {"text": "Study other notebooks", "style": "Reflector"},
+      {"text": "Understand dataset deeply", "style": "Theorist"},
+      {"text": "Look at real-world goal of project", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q11",
+    "type": "task",
+    "prompt": "You need to improve model accuracy. What’s your approach?",
+    "options": [
+      {"content": "Try multiple models fast", "style": "Activist"},
+      {"content": "Review past experiments", "style": "Reflector"},
+      {"content": "Analyze model assumptions", "style": "Theorist"},
+      {"content": "Study industry solutions", "style": "Pragmatist"}
+    ]
+  },
+  {
+    "question_id": "ML_Q12",
+    "type": "mcq",
+    "question": "When learning ML, your biggest focus is:",
+    "options": [
+      {"text": "Doing quickly", "style": "Activist"},
+      {"text": "Understanding slowly", "style": "Reflector"},
+      {"text": "Mastering concepts deeply", "style": "Theorist"},
+      {"text": "Applying in real-world", "style": "Pragmatist"}
+    ]
+  }
+]
