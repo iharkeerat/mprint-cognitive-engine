@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M-Print | Cognitive Intelligence</title>
     
-    <!-- Fonts & Scripts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -48,35 +47,14 @@
             margin: 0; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-overflow-y: auto;  
+            overflow-x: hidden; 
         }
         
-        /* Nav Auth Mode Logic (Bulletproof) */
+        /* Nav Auth Mode Logic */
         body.auth-mode #nav-controls {
             display: none !important;
         }
 
-
-        @media (max-width: 640px) {
-    h1 {
-        font-size: 2.5rem !important;
-        line-height: 1.2 !important;
-    }
-
-    .glass-card {
-        padding: 1rem !important;
-    }
-
-    .option-btn {
-        font-size: 14px;
-    }
-
-    nav {
-        height: auto;
-        padding: 8px 0;
-    }
-} 
         /* 3D Background Scoped strictly to Hero */
         #canvas-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -124,9 +102,7 @@ overflow-y: auto;
             outline: none; 
             background: #ffffff; 
         }
-        button {
-    touch-action: manipulation;
-}
+        
         .apple-btn { 
             background: #1d1d1f; 
             color: white; 
@@ -140,16 +116,14 @@ overflow-y: auto;
         }
         .apple-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
         
-        /* DEEP FIX 1: Allow elements to grow with text */
         #view-assessment .glass-card {
             max-height: none !important; 
             height: auto;
         }
 
-        /* DEEP FIX 2: Allow button text wrapping on mobile */
         .option-btn { 
-            white-space: normal !important; 
-            height: auto !important;        
+            white-space: normal; 
+            height: auto;        
             min-height: 60px;
             align-items: flex-start; 
             text-align: left;
@@ -159,30 +133,12 @@ overflow-y: auto;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             -webkit-tap-highlight-color: transparent;
-            padding: 1rem !important; /* Ensure padding for text */
-            display: flex;
-            flex-direction: row;
         }
         .option-btn:hover, .option-btn:active { 
             border-color: #3168FF; 
             background-color: #ffffff; 
             transform: translateX(4px); 
             box-shadow: 0 6px 16px rgba(49, 104, 255, 0.08);
-        }
-
-        /* DEEP FIX 3: Fully scrollable views for mobile */
-        .no-scroll-view {
-            min-height: calc(100vh - 64px); 
-            overflow-y: auto !important; 
-            display: flex;
-            flex-direction: column;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* DEEP FIX 4: Responsive Charts */
-        canvas {
-            max-width: 100% !important;
-            height: auto !important;
         }
 
         /* Scroll Animations */
@@ -228,14 +184,22 @@ overflow-y: auto;
             transform: translateY(0);
             pointer-events: auto;
         }
+
+        /* Subtle Bounce for Scroll Hint */
+        @keyframes smoothBounce {
+            0%, 100% { transform: translateY(-15%); opacity: 0.6; }
+            50% { transform: translateY(15%); opacity: 1; }
+        }
+        .animate-smooth-bounce {
+            animation: smoothBounce 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
     </style>
 </head>
 
-<body class="relative min-h-screen text-apple-textDark antialiased">
+<body class="relative min-h-screen text-apple-textDark antialiased auth-mode">
 
 <div id="toast-container"></div>
 
-<!-- NAVIGATION -->
 <nav class="glass-nav fixed top-0 w-full z-50 h-16 transition-all">
     <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
         <div class="flex items-center space-x-2 font-bold tracking-tight text-xl cursor-pointer flex-shrink-0" onclick="navigate('home')">
@@ -243,10 +207,8 @@ overflow-y: auto;
             <span>M-Print</span>
         </div>
         
-        <!-- Nav Controls Wrapper -->
         <div id="nav-controls" class="flex-1 flex justify-end items-center">
-            <!-- Desktop Nav Links -->
-            <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
+            <div id="nav-links" class="hidden lg:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
                 <button onclick="navigate('home')" class="hover:text-apple-textDark transition-colors">Dashboard</button>
                 <button onclick="scrollToElement('diagnostic-section')" class="hover:text-apple-textDark transition-colors">Diagnostics</button>
                 <div class="h-4 w-px bg-gray-300/50"></div>
@@ -256,8 +218,7 @@ overflow-y: auto;
                 </button>
             </div>
 
-            <!-- Mobile Nav Toggle -->
-            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-apple-textDark p-2 focus:outline-none ml-4">
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-apple-textDark p-2 focus:outline-none ml-4">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
@@ -265,19 +226,17 @@ overflow-y: auto;
         </div>
     </div>
 
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl flex-col px-6 py-6 space-y-4 md:hidden z-50">
+    <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl flex-col px-6 py-6 space-y-4 hidden lg:hidden">
         <button onclick="navigate('home'); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-apple-textDark hover:text-apple-blue py-2 border-b border-gray-100">Dashboard</button>
         <button onclick="scrollToElement('diagnostic-section'); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-apple-textDark hover:text-apple-blue py-2 border-b border-gray-100">Diagnostics</button>
         <button onclick="logout(); toggleMobileMenu();" class="w-full text-left text-lg font-semibold text-red-500 hover:text-red-600 py-2">Sign Out</button>
     </div>
 </nav>
 
-<!-- MAIN CONTENT WRAPPER -->
 <main class="w-full relative z-10 pt-16">
     
-    <!-- 1. AUTH VIEW -->
-    <div id="view-auth" class="px-4 min-h-[calc(100vh-64px)] flex items-center justify-center fade-in-up pb-10">
+    <!-- View: Auth (Flex handles centering natively) -->
+    <div id="view-auth" class="w-full px-4 min-h-[calc(100vh-64px)] flex flex-col items-center justify-center fade-in-up pb-10">
         <div class="glass-card rounded-[2rem] p-6 md:p-10 max-w-md w-full relative">
             <div class="text-center mb-8">
                 <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-gray-100">
@@ -291,18 +250,11 @@ overflow-y: auto;
                 <div id="signup-fields" class="hidden space-y-4 fade-in-up">
                     <input id="name" type="text" placeholder="Full Name" class="apple-input w-full py-3.5 px-4 text-sm" />
                     
-                    <!-- Premium Segmented Control for Auth Level -->
                     <div class="relative flex gap-2 p-1.5 bg-white/70 backdrop-blur-md border border-gray-200/50 rounded-[14px] shadow-inner items-center">
                         <input type="hidden" id="level" value="Beginner">
-                        <button type="button" onclick="selectAuthLevel('Beginner', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue">
-                            Beginner
-                        </button>
-                        <button type="button" onclick="selectAuthLevel('Intermediate', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-transparent text-gray-500">
-                            Intermediate
-                        </button>
-                        <button type="button" onclick="selectAuthLevel('Advanced', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-transparent text-gray-500">
-                            Advanced
-                        </button>
+                        <button type="button" onclick="selectAuthLevel('Beginner', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue">Beginner</button>
+                        <button type="button" onclick="selectAuthLevel('Intermediate', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-transparent text-gray-500">Intermediate</button>
+                        <button type="button" onclick="selectAuthLevel('Advanced', this)" class="auth-level-btn flex-1 py-2 px-1 sm:px-3 text-[10px] sm:text-[11px] font-bold rounded-xl bg-transparent text-gray-500">Advanced</button>
                     </div>
                     <input id="goal" type="text" placeholder="Primary Learning Goal" class="apple-input w-full py-3.5 px-4 text-sm" />
                 </div>
@@ -321,10 +273,9 @@ overflow-y: auto;
         </div>
     </div>
 
-    <!-- 2. HOME VIEW -->
-    <div id="view-home" class="hidden w-full flex-col pb-10 no-scroll-view">
+    <!-- View: Home -->
+    <div id="view-home" class="hidden w-full flex flex-col pb-10">
         
-        <!-- HERO SECTION -->
         <section class="relative w-full min-h-[calc(100vh-64px)] flex flex-col items-center justify-center text-center px-4 md:px-6">
             <div id="canvas-container"></div>
 
@@ -355,20 +306,18 @@ overflow-y: auto;
             </div>
         </section>
 
-        <!-- DASHBOARD SECTION -->
         <section id="user-progress-section" class="hidden max-w-5xl w-full mx-auto px-4 md:px-6 pt-12 md:pt-16 mb-12 md:mb-16 scroll-element relative z-10">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-apple-textDark">Your Analytics</h3>
             </div>
-            <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"></div>
+            <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"></div>
         </section>
 
-        <!-- TRENDING PATHWAYS -->
         <section id="featured-section" class="max-w-5xl w-full mx-auto px-4 md:px-6 py-8 md:py-12 relative z-10 scroll-element">
             <div class="mb-6 md:mb-8 flex flex-col items-center text-center sm:items-start sm:text-left">
                 <h3 class="text-xl md:text-2xl font-bold tracking-tight text-apple-textDark">Standard Modules</h3>
             </div>
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <button onclick="setAndStart('Machine Learning')" class="glass-card rounded-[1.5rem] p-5 md:p-6 text-left group flex flex-col justify-between h-28 md:h-32">
                     <svg class="w-6 h-6 text-apple-blue mb-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                     <p class="font-semibold text-xs md:text-sm text-apple-textDark">Machine<br>Learning</p>
@@ -388,7 +337,6 @@ overflow-y: auto;
             </div>
         </section>
 
-        <!-- DIAGNOSTIC INPUT -->
         <section id="diagnostic-section" class="max-w-5xl w-full mx-auto px-4 md:px-6 mb-12 md:mb-16 relative z-10 scroll-element">
             <div class="glass-card rounded-[2rem] p-5 md:p-8 flex flex-col lg:flex-row gap-5 items-end">
                 <div class="w-full flex-grow">
@@ -401,18 +349,9 @@ overflow-y: auto;
                     
                     <div class="relative flex gap-2 p-1.5 bg-white/70 backdrop-blur-md border border-gray-200/60 rounded-[16px] shadow-inner items-center h-[54px]">
                         <input type="hidden" id="test-level" value="Beginner">
-                        
-                        <button type="button" onclick="selectLevel('Beginner', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue transition-all duration-300 transform scale-100">
-                            Beginner
-                        </button>
-                        
-                        <button type="button" onclick="selectLevel('Intermediate', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">
-                            Intermediate
-                        </button>
-                        
-                        <button type="button" onclick="selectLevel('Advanced', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">
-                            Advanced
-                        </button>
+                        <button type="button" onclick="selectLevel('Beginner', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] text-apple-blue transition-all duration-300 transform scale-100">Beginner</button>
+                        <button type="button" onclick="selectLevel('Intermediate', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">Intermediate</button>
+                        <button type="button" onclick="selectLevel('Advanced', this)" class="level-btn flex-1 h-full px-1 sm:px-4 flex items-center justify-center text-xs md:text-[13px] font-bold rounded-xl text-gray-500 hover:text-gray-800 transition-all duration-300 transform scale-95 hover:scale-100">Advanced</button>
                     </div>
                 </div>
 
@@ -424,11 +363,10 @@ overflow-y: auto;
             </div>
         </section>
 
-        <!-- SEPARATOR -->
-        <hr class="w-full border-t border-gray-300/40 mt-6 md:mt-10 mb-8 md:mb-12 scroll-element">
+        <!-- Fixed Built With Elite Architecture Section -->
+        <hr class="w-full border-t border-gray-300/40 mt-8 md:mt-12 mb-10 scroll-element">
 
-        <!-- ELITE ARCHITECTURE & TECH STACK -->
-        <section class="max-w-6xl w-full mx-auto px-4 md:px-6 text-center scroll-element relative z-10 hidden sm:block">
+        <section class="max-w-6xl w-full mx-auto px-4 md:px-6 text-center scroll-element relative z-10">
             <h3 class="text-[15px] md:text-[17px] font-bold text-gray-800 mb-1">Built with Elite Architecture</h3>
             <p class="text-[12px] md:text-[13px] text-gray-500 font-medium mb-8 md:mb-10 flex items-center justify-center gap-1.5">Made with <svg class="w-3.5 h-3.5 text-red-500 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/></svg> using these technologies</p>
             
@@ -441,9 +379,8 @@ overflow-y: auto;
             </div>
         </section>
 
-        <hr class="w-full border-t border-gray-300/40 mb-10 scroll-element hidden sm:block">
+        <hr class="w-full border-t border-gray-300/40 mb-10 scroll-element">
 
-        <!-- FOOTER -->
         <footer class="w-full max-w-7xl mx-auto px-4 md:px-6 pb-8 md:pb-12 relative z-10 scroll-element">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 md:mb-10">
                 <div class="col-span-1 md:col-span-2">
@@ -481,77 +418,84 @@ overflow-y: auto;
         </footer>
     </div>
 
-    <!-- 3. ASSESSMENT VIEW -->
+    <!-- View: Assessment -->
     <div id="view-assessment" class="hidden min-h-[calc(100vh-64px)] p-4 md:p-6 flex items-center justify-center fade-in-up">
-        <!-- Deep fix: max-h-[600px] removed to let questions breathe -->
-        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col shadow-glass-hover relative my-8">
+        <div class="glass-card rounded-[2rem] p-5 md:p-10 w-full max-w-3xl flex flex-col max-h-[600px] shadow-glass-hover relative my-8">
             <div id="assessment-content" class="flex-grow flex flex-col justify-center w-full"></div>
         </div>
     </div>
 
-    <!-- 4. RESULTS VIEW (NATURALLY SCROLLABLE FIX) -->
-    <!-- Removed no-scroll-view and added overflow-y-auto min-h-screen -->
-    <div id="view-results" class="hidden overflow-y-auto min-h-screen p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex-col gap-6">
-        <!-- Header -->
-        <div class="flex justify-between items-end">
-            <div class="w-full">
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-textDark mb-1" id="res-topic">Results</h2>
-                <div id="res-subtitle-container" class="w-full"></div>
+    <!-- View: Results (Completely revamped breathing room and responsive logic) -->
+    <div id="view-results" class="hidden w-full max-w-7xl mx-auto px-4 md:px-8 fade-in-up flex flex-col">
+        
+        <!-- Mobile Fold 1: Header + Metrics -->
+        <div class="flex flex-col pt-8 lg:pt-12">
+            
+            <div class="flex justify-between items-start md:items-end w-full">
+                <div class="w-full">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tight text-apple-textDark mb-1" id="res-topic">Results</h2>
+                    <div id="res-subtitle-container" class="w-full"></div>
+                </div>
+                <button onclick="navigate('home')" class="apple-btn px-8 py-3 text-sm font-bold hidden lg:block flex-shrink-0 shadow-lg hover:shadow-xl transition-all">Done</button>
             </div>
-            <button onclick="navigate('home')" class="apple-btn px-6 py-2.5 text-xs font-semibold hidden md:block">Done</button>
+
+            <!-- Highly spacious and padded metric cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8 mt-8 lg:mt-12 w-full">
+                <div class="glass-card rounded-[2rem] p-6 lg:p-8 flex flex-col justify-center">
+                    <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-2">Confidence</p>
+                    <p class="text-4xl lg:text-5xl font-black tracking-tighter text-apple-textDark" id="res-conf">0%</p>
+                </div>
+                <div class="glass-card rounded-[2rem] p-6 lg:p-8 flex flex-col justify-center">
+                    <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-2">Accuracy</p>
+                    <p class="text-4xl lg:text-5xl font-black tracking-tighter text-apple-textDark" id="res-acc">0%</p>
+                </div>
+                <div class="glass-card rounded-[2rem] p-6 lg:p-8 flex flex-col justify-center">
+                    <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-2">Archetype</p>
+                    <p class="text-2xl lg:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-apple-blue to-apple-purple truncate" id="res-style">Activist</p>
+                </div>
+                <div class="glass-card rounded-[2rem] p-6 lg:p-8 flex flex-col justify-center relative overflow-hidden">
+                    <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-3">Historical Velocity</p>
+                    <div id="historical-data" class="w-full z-10 flex-grow flex items-center"></div>
+                </div>
+            </div>
         </div>
 
-        <!-- Metric Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
-                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Confidence</p>
-                <p class="text-2xl md:text-3xl font-bold tracking-tight text-apple-textDark" id="res-conf">0%</p>
-            </div>
-            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
-                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Accuracy</p>
-                <p class="text-2xl md:text-3xl font-bold tracking-tight text-apple-textDark" id="res-acc">0%</p>
-            </div>
-            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center">
-                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-1">Archetype</p>
-                <p class="text-lg md:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-apple-blue to-apple-purple truncate" id="res-style">Activist</p>
-            </div>
-            <div class="glass-card rounded-[1.5rem] p-4 flex flex-col justify-center relative overflow-hidden">
-                <p class="text-[10px] font-bold text-apple-textLight uppercase tracking-widest mb-2">Historical Velocity</p>
-                <div id="historical-data" class="w-full z-10 flex-grow flex items-center"></div>
-            </div>
-        </div>
-
-        <!-- Charts & Path -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
-            <!-- Path List -->
-            <div class="glass-card rounded-[1.5rem] p-5 lg:col-span-1 flex flex-col min-h-[250px] max-h-[400px]">
-                <h3 class="text-[10px] font-bold uppercase tracking-widest mb-3 text-apple-textLight flex-shrink-0">Graph Routing</h3>
-                <div class="flex-grow overflow-y-auto custom-scrollbar pr-2" id="res-path"></div>
+        <!-- Fold 2: Insights & Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 pb-8 pt-8 w-full">
+            
+            <!-- Graph Routing dynamically stretches to its content up to max 400px -->
+            <div class="glass-card rounded-[2rem] p-6 lg:p-8 lg:col-span-1 flex flex-col h-auto min-h-[150px] max-h-[400px]">
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 lg:mb-6 text-apple-textLight flex-shrink-0">Graph Routing</h3>
+                <div class="flex-grow overflow-y-auto custom-scrollbar pr-2 lg:pr-4" id="res-path"></div>
             </div>
             
+            <!-- Bouncing Scroll hint positioned right before the behavioral charts -->
+            <div class="w-full flex flex-col items-center justify-center lg:hidden mt-2 mb-2 opacity-70 animate-smooth-bounce">
+                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-apple-textLight mb-2">Scroll to Graphs</span>
+                <svg class="w-6 h-6 text-apple-textLight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+
             <!-- Charts Area -->
-            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col items-center">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-4 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
-                    <div class="w-full relative min-h-[250px] sm:min-h-[300px]"><canvas id="radarChart"></canvas></div>
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
+                <div class="glass-card rounded-[2rem] p-8 flex flex-col items-center w-full">
+                    <h3 class="text-[10px] font-bold uppercase tracking-[0.15em] mb-6 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
+                    <div class="w-full relative h-[260px] md:h-[300px]"><canvas id="radarChart"></canvas></div>
                 </div>
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-4 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
-                    <div class="w-full relative min-h-[250px] sm:min-h-[300px]"><canvas id="lineChart"></canvas></div>
+                <div class="glass-card rounded-[2rem] p-8 flex flex-col w-full">
+                    <h3 class="text-[10px] font-bold uppercase tracking-[0.15em] mb-6 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
+                    <div class="w-full relative h-[260px] md:h-[300px]"><canvas id="lineChart"></canvas></div>
                 </div>
             </div>
         </div>
         
-        <!-- Mobile Done Button -->
-        <div class="md:hidden w-full pb-4 pt-2">
-            <button onclick="navigate('home')" class="apple-btn w-full py-3.5 text-sm font-semibold">Done</button>
+        <div class="lg:hidden w-full pb-10">
+            <button onclick="navigate('home')" class="apple-btn w-full py-4 text-base font-semibold shadow-lg">Done</button>
         </div>
     </div>
 </main>
 
 <script>
-// --- UTILS & GLOBAL STATE (RESTORED COMPLETELY) ---
-const API_BASE_URL = "https://mprint-cognitive-engine.onrender.com"; // Deep Fix: The Global URL
+// --- UTILS & GLOBAL STATE ---
 let sessionId = ""; 
 let currentTopic = ""; 
 let currentLevel = "Beginner"; 
@@ -593,7 +537,7 @@ function init3D() {
     camera.position.z = 8;
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.innerWidth < 768 ? 1 : 2);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
     container.appendChild(renderer.domElement);
     
     const material = new THREE.MeshBasicMaterial({
@@ -668,34 +612,41 @@ function selectAuthLevel(value, el) {
     el.classList.add('bg-white', 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]', 'text-apple-blue', 'scale-100');
 }
 
-// --- NAVIGATION & UI FLOW ---
+// --- BULLETPROOF NAVIGATION LOGIC ---
 function navigate(view) {
     const views = ['auth', 'home', 'assessment', 'results'];
-
+    
     views.forEach(v => {
         const el = document.getElementById(`view-${v}`);
-        if (!el) return;
-
-        if (v === view) {
-            el.classList.remove('hidden');
-        } else {
-            el.classList.add('hidden');
+        if (el) {
+            if (view === v) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
         }
     });
+    
+    if (view === 'auth') {
+        document.body.classList.add('auth-mode');
+    } else {
+        document.body.classList.remove('auth-mode');
+    }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Force 3D canvas resize trigger when coming from auth
+    if(view === 'home') {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 50);
+    }
+    
+    window.scrollTo(0, 0);
 }
 
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
-
-    if (menu.classList.contains('open')) {
-        menu.classList.remove('open');
-        setTimeout(() => menu.classList.add('hidden'), 200);
-    } else {
-        menu.classList.remove('hidden');
-        setTimeout(() => menu.classList.add('open'), 10);
-    }
+    menu.classList.toggle('hidden');
+    setTimeout(() => { menu.classList.toggle('open'); }, 10);
 }
 
 function scrollToElement(id) { 
@@ -725,7 +676,7 @@ function toggleAuthMode() {
     document.getElementById('signup-fields').classList.toggle('hidden', isLoginMode); 
 }
 
-// --- INTELLIGENT API FALLBACKS (Guarantees UI Never Breaks) ---
+// --- INTELLIGENT API FALLBACKS ---
 async function safeFetch(url, options = {}, mockData = null) {
     try {
         const res = await fetch(url, options);
@@ -752,14 +703,12 @@ async function handleAuth() {
     }
 
     const mockAuthResult = { access_token: "mock-token-123", user_id: 1 };
-    
-    // Deep Fix: Using proper backticks for variable interpolation
-    const result = await safeFetch(`${API_BASE_URL}/${endpoint}`, { 
+    const result = await safeFetch(`https://mprint-cognitive-engine.onrender.com/${endpoint}`, { 
         method: "POST", headers: {"Content-Type": "application/json"}, 
         body: JSON.stringify(data) 
     }, mockAuthResult);
     
-    if (result && !result.error && !result.detail) {
+    if (result && !result.error) {
         if (isLoginMode) { 
             localStorage.setItem("access_token", result.access_token);
             localStorage.setItem("user_id", result.user_id);
@@ -768,12 +717,12 @@ async function handleAuth() {
             navigate('home'); 
         }
         else { showToast("Success! Please Sign In."); toggleAuthMode(); }
-    } else { showToast(result.error || result.detail || "Authentication Failed", "error"); }
+    } else { showToast(result.error || "Authentication Failed", "error"); }
     
     btn.innerHTML = isLoginMode ? "Sign In" : "Continue"; btn.disabled = false;
 }
 
-// --- HISTORICAL DASHBOARD & SPARKLINES (RESTORED) ---
+// --- HISTORICAL DASHBOARD ---
 async function loadUserHistory(userId) {
     if(!userId) return;
     
@@ -782,7 +731,7 @@ async function loadUserHistory(userId) {
         "System Design": [{speed: 5.1, accuracy: 50}, {speed: 4.5, accuracy: 65}]
     };
     
-    const history = await safeFetch(`${API_BASE_URL}/user-history?user_id=${userId}`, {}, mockHistory);
+    const history = await safeFetch(`https://mprint-cognitive-engine.onrender.com/user-history?user_id=${userId}`, {}, mockHistory);
     
     const grid = document.getElementById('history-grid'); 
     const section = document.getElementById('user-progress-section');
@@ -837,7 +786,7 @@ async function startSession() {
         { question: `How do you validate your understanding of ${currentTopic}?`, options: [{text: "Building a small side project", style: "Activist", is_correct: true}, {text: "Explaining it to someone else", style: "Reflector", is_correct: true}, {text: "Taking a quiz or formal test", style: "Theorist", is_correct: false}], difficulty: 3, type: "behavioral" }
     ];
 
-    questions = await safeFetch(`${API_BASE_URL}/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`, {}, mockQuestions);
+    questions = await safeFetch(`https://mprint-cognitive-engine.onrender.com/get-questions?topic=${encodeURIComponent(currentTopic)}&level=${encodeURIComponent(currentLevel)}`, {}, mockQuestions);
     
     if (questions && questions.length > 0) { 
         currentQ = 0; responses = []; sessionId = "SESS_" + Date.now(); 
@@ -866,11 +815,11 @@ function showQuestion() {
         
         <div class="flex-grow flex flex-col justify-center min-h-0">
             <h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-apple-textDark mb-6 md:mb-10 leading-snug tracking-tight text-center md:text-left">${q.question}</h3>
-            <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 pb-4">`;
+            <div class="space-y-3 w-full max-w-2xl mx-auto md:mx-0 overflow-y-auto custom-scrollbar pr-2 max-h-[350px] pb-4">`;
 
     q.options.forEach((opt, i) => { 
         html += `
-            <button onclick="selectOption(${i})" class="w-full option-btn text-apple-textDark font-medium group text-sm md:text-base">
+            <button onclick="selectOption(${i})" class="w-full text-left px-4 md:px-5 py-3 md:py-4 option-btn text-apple-textDark font-medium flex justify-between items-center group text-sm md:text-base">
                 <span>${opt.text}</span>
                 <svg class="w-4 h-4 text-gray-300 group-hover:text-apple-blue transition-colors flex-shrink-0 ml-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>`; 
@@ -880,7 +829,6 @@ function showQuestion() {
     document.getElementById("assessment-content").innerHTML = html;
 }
 
-// 🧠 ADAPTIVE DECISION ENGINE (RESTORED)
 function selectOption(index) {
     const selected = questions[currentQ].options[index];
     responses.push({ 
@@ -915,16 +863,16 @@ function selectOption(index) {
     }
 }
 
+// 🧠 ADAPTIVE DECISION ENGINE
 function decideNextQuestion(lastResponse, currentDifficulty) {
     if (!lastResponse.correct && lastResponse.time < 0.5) return Math.max(1, currentDifficulty - 1); 
     if (lastResponse.correct && lastResponse.time > 1.5) return Math.min(5, currentDifficulty + 1); 
     return currentDifficulty;
 }
 
-// --- SUBMIT & ANALYZE ---
 async function submitResults() {
     document.getElementById("assessment-content").innerHTML = `
-        <div class="flex flex-col items-center justify-center h-full fade-in-up py-10">
+        <div class="flex flex-col items-center justify-center h-full fade-in-up">
             <svg class="animate-spin w-10 h-10 text-apple-blue mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             <h3 class="text-xl font-bold tracking-tight mb-2 text-apple-textDark">Synthesizing Data</h3>
             <p class="text-apple-textLight text-xs font-semibold uppercase tracking-widest">Generating Pathway</p>
@@ -933,8 +881,9 @@ async function submitResults() {
     const userId = localStorage.getItem("user_id") || "1";
     const payload = { session_id: sessionId, target_skill: currentTopic, target_level: currentLevel, responses: responses };
     
+    // Dynamic Mock Fallback logic specifically targeting the user's responses
     const stylesCount = responses.reduce((acc, r) => { acc[r.style] = (acc[r.style] || 0) + 1; return acc; }, {});
-    const primaryStyle = Object.keys(stylesCount).length > 0 ? Object.keys(stylesCount).reduce((a, b) => stylesCount[a] > stylesCount[b] ? a : b) : "Activist";
+    const primaryStyle = Object.keys(stylesCount).reduce((a, b) => stylesCount[a] > stylesCount[b] ? a : b, "Activist");
     
     const mockResult = {
         mprint: { confidence: Math.floor(Math.random() * 20) + 75, marker: primaryStyle, message: "Pathway Calibrated" },
@@ -945,28 +894,30 @@ async function submitResults() {
     const mockTData = { status: "returning", improvement: 0.5, previous_speed: 4.2, history: [{speed: 4.2}, {speed: 3.5}] };
 
     try {
-        const result = await safeFetch(`${API_BASE_URL}/generate-path`, { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) }, mockResult);
-        const tData = await safeFetch(`${API_BASE_URL}/topic-progress?topic=${encodeURIComponent(currentTopic)}&user_id=${userId}`, {}, mockTData);
+        const result = await safeFetch("https://mprint-cognitive-engine.onrender.com/generate-path", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) }, mockResult);
+        const tData = await safeFetch(`https://mprint-cognitive-engine.onrender.com/topic-progress?topic=${encodeURIComponent(currentTopic)}`, {}, mockTData);
         
         renderResults(result, tData);
         
-        safeFetch(`${API_BASE_URL}/save-session`, { 
+        // Fire and forget save
+        safeFetch("https://mprint-cognitive-engine.onrender.com/save-session", { 
             method: "POST", headers: {"Content-Type": "application/json"}, 
             body: JSON.stringify({ user_id: parseInt(userId), session_id: sessionId, topic: currentTopic, target_level: currentLevel, responses: responses }) 
         }, {});
         
         loadUserHistory(userId);
     } catch (e) {
+        // Absolute safety catch
         console.error("Critical rendering error, fallback activated", e);
         renderResults(mockResult, mockTData);
     }
 }
 
-// --- RESULTS RENDERING & ADVANCED VISUALIZATION (RESTORED) ---
+// --- RESULTS RENDERING & VISUALIZATION ---
 function renderResults(result, tData) {
     navigate('results'); 
     document.getElementById('res-topic').innerText = currentTopic;
-    document.getElementById('res-conf').innerText = `${Math.round(result.mprint?.confidence || 0)}%`;
+    document.getElementById('res-conf').innerText = `${Math.round(result.mprint.confidence)}%`;
     
     let correct = responses.filter(r => r.is_correct).length;
     let accuracy = responses.length > 0 ? (correct / responses.length) * 100 : 0;
@@ -983,62 +934,65 @@ function renderResults(result, tData) {
     else insight = "Keep practicing.";
 
     document.getElementById('res-acc').innerText = `${accuracy.toFixed(0)}%`;
-    document.getElementById('res-style').innerText = result.mprint?.marker || "Activist";
+    document.getElementById('res-style').innerText = result.mprint.marker || "Activist";
     
-    const isReady = (result.mprint?.confidence || 0) >= 70;
+    const isReady = result.mprint.confidence >= 70;
     
+    // Beautiful vertically stacked Header format for mobile responsiveness
     document.getElementById('res-subtitle-container').innerHTML = `
-        <div class="flex flex-wrap items-center gap-2 mt-1 w-full">
-            <p class="text-apple-textLight text-xs md:text-sm font-medium mr-1">Level: ${currentLevel}</p>
-            <div class="flex items-center space-x-1.5 bg-white/50 px-3 py-1 rounded-full border border-white">
-                <span class="animate-pulse w-1.5 h-1.5 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'} flex-shrink-0"></span>
-                <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[9px] md:text-[10px] uppercase tracking-widest break-words whitespace-normal leading-tight">${result.mprint?.message || insight}</span>
+        <div class="flex flex-col gap-2 mt-2 w-full max-w-full">
+            <p class="text-apple-textLight text-xs font-bold tracking-widest uppercase">Level: ${currentLevel}</p>
+            <div class="inline-flex items-center space-x-2 bg-apple-blue/5 px-3 py-1.5 rounded-lg border border-apple-blue/10 w-fit max-w-full">
+                <span class="animate-pulse w-2 h-2 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'} flex-shrink-0"></span>
+                <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[10px] uppercase tracking-widest leading-tight truncate">${result.mprint.message}</span>
             </div>
         </div>`;
 
     let histHtml = "";
-    if (!tData || tData.status === "first_time" || !tData.history) {
+    if (!tData || tData.status === "first_time") {
         histHtml = `<div class="w-full"><p class="text-[10px] text-apple-textLight font-semibold">Initial Benchmark:</p><p class="text-lg font-bold text-apple-textDark">${currentSpeed.toFixed(1)}s</p></div>`;
     } else {
         const improved = tData.improvement > 0;
         histHtml = `
-            <div class="w-full flex justify-between items-center">
-                <div><p class="text-[9px] font-bold text-apple-textLight">PAST</p><p class="text-sm md:text-base font-bold text-apple-textDark">${(tData.previous_speed || 0).toFixed(1)}s</p></div>
-                <div class="h-6 w-px bg-gray-200"></div>
-                <div><p class="text-[9px] font-bold text-apple-textLight">CURRENT</p><p class="text-sm md:text-base font-bold text-apple-blue">${currentSpeed.toFixed(1)}s</p></div>
-                <div class="text-xs font-bold ${improved ? 'text-apple-blue' : 'text-apple-purple'} ml-1 md:ml-2">
-                    ${improved ? '▲' : '▼'} ${Math.abs(tData.improvement || 0).toFixed(1)}s
+            <div class="w-full flex flex-wrap items-center justify-between gap-2 mt-1">
+                <div class="flex items-center gap-2 lg:gap-3">
+                    <div class="flex flex-col"><span class="text-[9px] font-bold text-apple-textLight tracking-widest">PAST</span><span class="text-sm md:text-base font-bold text-apple-textDark">${(tData.previous_speed || 0).toFixed(1)}s</span></div>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <div class="flex flex-col"><span class="text-[9px] font-bold text-apple-textLight tracking-widest">CURRENT</span><span class="text-sm md:text-base font-bold text-apple-blue">${currentSpeed.toFixed(1)}s</span></div>
+                </div>
+                <div class="text-[11px] md:text-xs font-bold px-2 py-1 rounded-md bg-gray-50 border border-gray-100 flex items-center gap-1 ${improved ? 'text-apple-blue' : 'text-apple-purple'}">
+                    <span>${improved ? '▲' : '▼'}</span><span>${Math.abs(tData.improvement || 0).toFixed(1)}s</span>
                 </div>
             </div>`;
     }
     document.getElementById('historical-data').innerHTML = histHtml;
     
     const pathSteps = (result.paths && result.paths.length > 0) ? (Array.isArray(result.paths[0]) ? result.paths[0] : result.paths) : ["Data not found in graph"];
-    let pathHtml = `<ul class="space-y-3 pb-4">`; 
+    let pathHtml = `<ul class="space-y-3 lg:space-y-4 pb-2">`; 
     pathSteps.forEach((step, idx) => { 
         pathHtml += `
-            <li class="flex items-center bg-white/50 p-2.5 md:p-3 rounded-xl border border-white/60">
-                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-apple-blue/10 text-apple-blue text-[10px] font-bold flex items-center justify-center mr-3">${idx+1}</span>
+            <li class="flex items-center bg-white/50 p-3 md:p-4 rounded-xl border border-white/60 shadow-sm">
+                <span class="flex-shrink-0 w-7 h-7 rounded-full bg-apple-blue/10 text-apple-blue text-[11px] font-bold flex items-center justify-center mr-3">${idx+1}</span>
                 <span class="text-apple-textDark font-medium text-xs md:text-sm">${step}</span>
             </li>`; 
     });
     document.getElementById('res-path').innerHTML = pathHtml + `</ul>`; 
     
+    // Delay allows containers to compute physical height before Chart.js renders
     setTimeout(() => { drawCharts(result, tData); }, 100);
 }
 
 function drawCharts(result, tData) {
-    if(radarChartInstance) radarChartInstance.destroy(); 
-    if(lineChartInstance) lineChartInstance.destroy();
+    if(radarChartInstance) radarChartInstance.destroy(); if(lineChartInstance) lineChartInstance.destroy();
     
     let dist = result.style_distribution || {"Activist": 1, "Reflector": 1, "Theorist": 1, "Pragmatist": 1};
     let total = Object.values(dist).reduce((a,b)=>a+b,0) || 1;
 
     const rData = [
-        ((dist["Activist"] || 0) / total) * 100,
-        ((dist["Reflector"] || 0) / total) * 100,
-        ((dist["Theorist"] || 0) / total) * 100,
-        ((dist["Pragmatist"] || 0) / total) * 100
+        (dist["Activist"] || 0) / total * 100,
+        (dist["Reflector"] || 0) / total * 100,
+        (dist["Theorist"] || 0) / total * 100,
+        (dist["Pragmatist"] || 0) / total * 100
     ];
     
     const radarCtx = document.getElementById('radarChart');
@@ -1046,12 +1000,25 @@ function drawCharts(result, tData) {
         radarChartInstance = new Chart(radarCtx, { 
             type: 'radar', 
             data: { labels: ['Activist', 'Reflector', 'Theorist', 'Pragmatic'], datasets: [{ data: rData, backgroundColor: 'rgba(49, 104, 255, 0.15)', borderColor: '#3168FF', borderWidth: 2, pointBackgroundColor: '#3168FF', pointRadius: 2 }] }, 
-            options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' }, angleLines: { color: 'rgba(0,0,0,0.05)' } } }, plugins: { legend: { display: false } } } 
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                layout: { padding: 12 }, // Critical padding prevents cutting off labels
+                scales: { 
+                    r: { 
+                        ticks: { display: false }, 
+                        grid: { color: 'rgba(0,0,0,0.05)' }, 
+                        angleLines: { color: 'rgba(0,0,0,0.05)' },
+                        pointLabels: { font: { size: 10 } }
+                    } 
+                }, 
+                plugins: { legend: { display: false } } 
+            } 
         });
     }
     
     let speeds = tData && tData.history && tData.history.length > 0 ? tData.history.map(h => h.speed) : responses.map(r => r.time);
-    if(!speeds || speeds.length === 0) speeds = [0]; 
+    if(speeds.length === 0) speeds = [0]; // fallback to prevent empty chart error
     let labels = speeds.map((_, i) => `S${i+1}`);
     
     const lineCtx = document.getElementById('lineChart');
@@ -1059,7 +1026,13 @@ function drawCharts(result, tData) {
         lineChartInstance = new Chart(lineCtx, { 
             type: 'line', 
             data: { labels: labels, datasets: [{ data: speeds, borderColor: '#9A35FF', tension: 0.4, fill: true, backgroundColor: 'rgba(154, 53, 255, 0.1)', borderWidth: 2, pointBackgroundColor: '#fff', pointBorderColor: '#9A35FF', pointRadius: 3 }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false, grid: {display: false} }, x: { grid: { color: 'rgba(0,0,0,0.05)'}, ticks: {font: {size: 10}} } } } 
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                layout: { padding: { top: 12 } },
+                plugins: { legend: { display: false } }, 
+                scales: { y: { display: false, grid: {display: false} }, x: { grid: { color: 'rgba(0,0,0,0.05)'}, ticks: {font: {size: 10}} } } 
+            } 
         });
     }
 }
