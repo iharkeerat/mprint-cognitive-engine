@@ -141,7 +141,6 @@
         /* Layout Lock Classes */
         .no-scroll-view {
             min-height: calc(100vh - 64px);
-            overflow-y: auto; 
             display: flex;
             flex-direction: column;
         }
@@ -199,28 +198,31 @@
 <!-- NAVIGATION -->
 <nav class="glass-nav fixed top-0 w-full z-50 h-16 transition-all flex-shrink-0">
     <div class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
-        <div class="flex items-center space-x-2 font-bold tracking-tight text-xl cursor-pointer" onclick="navigate('home')">
+        <div class="flex items-center space-x-2 font-bold tracking-tight text-xl cursor-pointer flex-shrink-0" onclick="navigate('home')">
             <svg class="w-6 h-6 text-apple-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             <span>M-Print</span>
         </div>
         
-        <!-- Desktop Nav Links -->
-        <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
-            <button onclick="navigate('home')" class="hover:text-apple-textDark transition-colors">Dashboard</button>
-            <button onclick="scrollToElement('diagnostic-section')" class="hover:text-apple-textDark transition-colors">Diagnostics</button>
-            <div class="h-4 w-px bg-gray-300/50"></div>
-            <button onclick="logout()" class="text-apple-textLight hover:text-red-500 transition-colors flex items-center">
-                <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Sign Out
+        <!-- Nav Controls Wrapper (Hidden during Auth) -->
+        <div id="nav-controls" class="hidden flex-1 justify-end items-center">
+            <!-- Desktop Nav Links -->
+            <div id="nav-links" class="hidden md:flex space-x-8 text-sm font-medium text-apple-textLight items-center">
+                <button onclick="navigate('home')" class="hover:text-apple-textDark transition-colors">Dashboard</button>
+                <button onclick="scrollToElement('diagnostic-section')" class="hover:text-apple-textDark transition-colors">Diagnostics</button>
+                <div class="h-4 w-px bg-gray-300/50"></div>
+                <button onclick="logout()" class="text-apple-textLight hover:text-red-500 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sign Out
+                </button>
+            </div>
+
+            <!-- Mobile Nav Toggle -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-apple-textDark p-2 focus:outline-none ml-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
             </button>
         </div>
-
-        <!-- Mobile Nav Toggle -->
-        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-apple-textDark p-2 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-        </button>
     </div>
 
     <!-- Mobile Menu Overlay -->
@@ -446,13 +448,13 @@
         </div>
     </div>
 
-    <!-- 4. RESULTS VIEW (STRICTLY NO SCROLL ON DESKTOP) -->
-    <div id="view-results" class="hidden min-h-screen p-4 md:p-6 fade-in-up w-full max-w-6xl mx-auto overflow-y-auto">
+    <!-- 4. RESULTS VIEW (NOW FREELY SCROLLABLE) -->
+    <div id="view-results" class="hidden p-4 md:p-6 pb-24 md:pb-10 fade-in-up w-full max-w-6xl mx-auto flex flex-col h-auto">
         <!-- Header -->
         <div class="flex justify-between items-end mb-4 flex-shrink-0 mt-4 md:mt-0">
-            <div>
+            <div class="w-full">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-apple-textDark mb-1" id="res-topic">Results</h2>
-                <div id="res-subtitle-container" class="flex items-center gap-2"></div>
+                <div id="res-subtitle-container" class="w-full"></div>
             </div>
             <button onclick="navigate('home')" class="apple-btn px-6 py-2.5 text-xs font-semibold hidden md:block">Done</button>
         </div>
@@ -478,20 +480,20 @@
         </div>
 
         <!-- Charts & Path -->
-        <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 min-h-0">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
             <!-- Path List -->
-            <div class="glass-card rounded-[1.5rem] p-5 lg:col-span-1 flex flex-col h-[250px] lg:h-full overflow-hidden">
+            <div class="glass-card rounded-[1.5rem] p-5 lg:col-span-1 flex flex-col min-h-[250px] max-h-[400px]">
                 <h3 class="text-[10px] font-bold uppercase tracking-widest mb-3 text-apple-textLight flex-shrink-0">Graph Routing</h3>
                 <div class="flex-grow overflow-y-auto custom-scrollbar pr-2" id="res-path"></div>
             </div>
             
-            <!-- Charts Area - Fixed Height classes for guaranteed rendering -->
-            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 h-full overflow-hidden">
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[250px] sm:h-[300px] lg:h-full items-center">
+            <!-- Charts Area - Changed from h-full/overflow-hidden to allow natural mobile stacking -->
+            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[300px] items-center">
                     <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight w-full text-left flex-shrink-0">Cognitive Profile</h3>
                     <div class="w-full h-full relative"><canvas id="radarChart"></canvas></div>
                 </div>
-                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[250px] sm:h-[300px] lg:h-full">
+                <div class="glass-card rounded-[1.5rem] p-5 flex flex-col h-[300px]">
                     <h3 class="text-[10px] font-bold uppercase tracking-widest mb-2 text-apple-textLight flex-shrink-0">Velocity Trend</h3>
                     <div class="w-full h-full relative"><canvas id="lineChart"></canvas></div>
                 </div>
@@ -499,8 +501,8 @@
         </div>
         
         <!-- Mobile Done Button -->
-        <div class="mt-4 md:hidden flex-shrink-0 pb-6">
-            <button onclick="navigate('home')" class="apple-btn w-full py-3 text-sm font-semibold">Done</button>
+        <div class="mt-4 md:hidden flex-shrink-0 w-full pb-4">
+            <button onclick="navigate('home')" class="apple-btn w-full py-3.5 text-sm font-semibold">Done</button>
         </div>
     </div>
 </main>
@@ -630,26 +632,23 @@ function navigate(view) {
     });
     document.getElementById(`view-${view}`).classList.remove('hidden');
     
-    const navLinks = document.getElementById('nav-links');
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    
+    const navControls = document.getElementById('nav-controls');
     if(view === 'auth') {
-        navLinks.classList.remove('md:flex');
-        navLinks.classList.add('hidden');
-        mobileMenuBtn.classList.add('hidden');
+        navControls.classList.add('hidden');
+        navControls.classList.remove('flex');
     } else {
-        navLinks.classList.remove('hidden');
-        navLinks.classList.add('md:flex');
-        mobileMenuBtn.classList.remove('hidden');
+        navControls.classList.remove('hidden');
+        navControls.classList.add('flex');
     }
     
-    const body = document.body;
-    if(view === 'assessment' || view === 'results') {
-        body.style.overflow = 'hidden';
+    // Corrected Scrolling Logic: We only lock the scroll area on Assessment view.
+    const mainArea = document.getElementById('main-scroll-area');
+    if(view === 'assessment') {
+        mainArea.style.overflowY = 'hidden';
     } else {
-        body.style.overflow = 'auto';
+        mainArea.style.overflowY = 'auto';
     }
-    document.getElementById('main-scroll-area').scrollTo(0, 0);
+    mainArea.scrollTo(0, 0);
 }
 
 function toggleMobileMenu() {
@@ -945,11 +944,15 @@ function renderResults(result, tData) {
     document.getElementById('res-style').innerText = result.mprint.marker || "Activist";
     
     const isReady = result.mprint.confidence >= 70;
+    
+    // Corrected Wrapping layout for the Subtitle Container
     document.getElementById('res-subtitle-container').innerHTML = `
-        <p class="text-apple-textLight text-xs md:text-sm font-medium">Level: ${currentLevel}</p>
-        <div class="flex items-center space-x-1.5 bg-white/50 px-2.5 py-0.5 rounded-full border border-white">
-            <span class="animate-pulse w-1.5 h-1.5 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'}"></span>
-            <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[10px] uppercase tracking-widest truncate max-w-[120px]">${result.mprint.message}</span>
+        <div class="flex flex-wrap items-center gap-2 mt-1 w-full">
+            <p class="text-apple-textLight text-xs md:text-sm font-medium mr-1">Level: ${currentLevel}</p>
+            <div class="flex items-center space-x-1.5 bg-white/50 px-3 py-1 rounded-full border border-white">
+                <span class="animate-pulse w-1.5 h-1.5 rounded-full ${isReady ? 'bg-apple-blue' : 'bg-apple-purple'} flex-shrink-0"></span>
+                <span class="${isReady ? 'text-apple-blue' : 'text-apple-purple'} font-bold text-[9px] md:text-[10px] uppercase tracking-widest break-words whitespace-normal leading-tight">${result.mprint.message}</span>
+            </div>
         </div>`;
 
     let histHtml = "";
