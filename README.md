@@ -1,141 +1,70 @@
-<div align="center">
+# M-Print: Adaptive Assessment and Learning-Path Prototype
 
-# 🧠 M-Print — Cognitive Intelligence Engine
-**Modeling how learners think — not just what they know.**
+**Research-oriented software prototype · Python / FastAPI · Neo4j · SQLite · browser UI**
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
-[![Database](https://img.shields.io/badge/Graph_DB-Neo4j-018bff?logo=neo4j)](https://neo4j.com/)
-[![AI Engine](https://img.shields.io/badge/AI-Gemini_2.5_Flash-8A2BE2)](#)
+M-Print explores a practical question: **how can option-level responses and prerequisite relationships inform the next step of a learning assessment?** The repository contains an exploratory web application—not a validated model of a learner's cognitive state.
 
-</div>
+> **Status:** research/engineering prototype. No participant study, diagnostic validity assessment, peer-reviewed publication, or deployment-safety certification is claimed.
 
-## 🚀 Overview
+## What is implemented
 
-Most educational systems evaluate knowledge outcomes — what a learner remembers. **M-Print** explores a different direction: *Can we model how learners think while learning?*
+| Component | Repository evidence | Role |
+| --- | --- | --- |
+| Assessment API | [main.py](main.py) | Question requests, response submission, user/session endpoints and response-based routing |
+| Scoring prototype | [mprint_engine.py](mprint_engine.py) | Weighted response-label distributions, entropy, heuristic adjustments and summary metrics |
+| Prerequisite graph | [graph_query.py](graph_query.py), [graph_loader.py](graph_loader.py), [skills.json](skills.json) | Neo4j skill relationships and graph-based path queries |
+| Persistence | [database.py](database.py), [main.py](main.py) | SQLite tables for users, sessions and submitted responses |
+| Browser interface | [index.html](index.html) | Standalone HTML/JavaScript frontend using CDN-loaded visual components |
+| Sample content | [\*_questions.json](ml_questions.json) | Local question banks used as a fallback |
 
-This project is a cognitive intelligence engine built at the intersection of:  
-**Artificial Intelligence × Graph Theory × Educational Psychology**
+The optional Google GenAI integration generates question content when configured. API failure is handled by a local-question fallback within the question endpoint; **the code has not been independently smoke-tested for zero-credential startup**.
 
-Instead of focusing solely on correctness, M-Print attempts to model real-time cognitive processes through behavioral signals and adaptive pathways.
+## Architecture at a glance
 
----
+\`\`\`text
+Browser interface (index.html)
+    |
+    v
+FastAPI (main.py)
+    |-- optional AI question generation / local question banks
+    |-- assessment responses and accuracy-based routing
+    |-- SQLite: users / sessions / responses
+    |-- Neo4j: prerequisite graph and learning-path queries
+    |
+    +-- independent heuristic scoring experiment (mprint_engine.py)
+\`\`\`
 
-## 🎯 Core Idea
+**Terminology matters.** Labels such as *Activist*, *Reflector*, *Theorist* and *Pragmatist* are **developer-assigned response categories**, not independently established learning styles, cognitive profiles or psychological diagnoses. The source's "confidence" metric is a margin between normalized label scores, **not a statistically calibrated probability**. Correctness and time are observable interface measurements; psychological interpretation remains unvalidated.
 
-The system does not label the learner. It continuously learns *how* the learner learns. M-Print captures interaction-level data to approximate:
+## Local exploration
 
-- ⚡ **Behavioral engagement velocity**
-- 🧠 **Information internalization patterns**
-- 🔄 **Dynamic learning pathway adaptation**
+The Python environment and external services must be configured before starting the current API:
 
----
+1. Clone this repository and create a Python virtual environment.
+2. Install the provided [requirements.txt](requirements.txt) (a development-environment snapshot, not a tested minimal dependency lock).
+3. Create a local \`.env\` using [the example](.env.example) and set **your own** Gemini API key and Neo4j connection credentials. Never commit credentials.
+4. Run a compatible local Neo4j instance and populate its graph using \`python graph_loader.py\`.
+5. Start the API with \`uvicorn main:app --reload\`, then open \`http://127.0.0.1:8000/docs\` to inspect its FastAPI endpoints.
+6. Serve [index.html](index.html) locally and configure its API origin if necessary.
 
-## 🧠 System Architecture
+**These are source-derived setup instructions, not a claim that a clean installation or frontend integration was verified on 11 November 2026.** See [Reproducibility and setup notes](docs/REPRODUCIBILITY.md) for prerequisites, checks and troubleshooting.
 
-### 🔹 Generative AI as Analytic Engine
-Orchestrates Google Gemini 2.5 Flash as a structured reasoning layer, generating real-time adaptive diagnostics with strict JSON enforcement and schema validation.
+## Research boundaries
 
-### 🔹 Graph-Theoretic Pathway Optimization
-A Neo4j-based knowledge graph models conceptual dependencies and identifies optimal prerequisite pathways for efficient learning progression.
+This repository combines **software exploration** with early-stage assessment questions. It does **not** demonstrate that time taken reveals a learning style, that category scores measure cognition, or that generated questions are psychometrically valid. It contains no verified learner-effectiveness study.
 
-### 🔹 Behavioral Analytics
-Captures millisecond-level interaction signals (response time, accuracy trends) to approximate cognitive patterns such as:
-- **Activist**
-- **Reflector**
-- **Theorist**
-- **Pragmatist**
+A separate research track on sparse adaptive-assessment identifiability studies a restricted synthetic latent-variable model. That work should not be conflated with the currently public application code; its analyses and test evidence are not included in this checkout.
 
----
+Read the [research scope and limitations](docs/RESEARCH_SCOPE.md) and [security/deployment caveats](SECURITY.md) before citing or deploying the project.
 
-## ⚙️ Tech Stack & Implementation
+## Reuse and evaluation
 
-| Component | Technologies | Description |
-| :--- | :--- | :--- |
-| **Backend** | FastAPI (Python) | Orchestrates AI inference, graph traversal, and behavioral data pipelines. |
-| **Databases** | Neo4j, SQLite | Neo4j for the knowledge graph; SQLite for time-series behavioral logs. |
-| **Frontend** | Tailwind CSS, Three.js, Chart.js | Glassmorphism UI integrated with WebGL and Chart.js for real-time visualization. |
-| **Security** | JWT, bcrypt | Stateless JWT authentication with bcrypt-based password hashing. |
+This repository is suitable for **code inspection, further experiments and academic discussion**, not real educational diagnosis or consequential student decisions. Researchers can independently review the API, scoring logic and graph queries, and design new empirical tests. A production service would require authentication/authorization, data protection, model validity, service reliability and security review.
 
----
+**Project links:** [Research scope](docs/RESEARCH_SCOPE.md) · [Reproducibility](docs/REPRODUCIBILITY.md) · [Portfolio facts](docs/PORTFOLIO_SUMMARY.md)
 
-## 📊 Intelligence Model
+## License
 
-### Metrics
-- **Confidence Score:** `Correct / Total`
-- **Learning Velocity:** Improvement rate over time
-- **Behavioral Consistency:** Interaction stability across sessions
+[Apache License 2.0](LICENSE). Third-party libraries, APIs and sample content remain subject to their own terms.
 
-### Behavioral Interpretation
-| Signal | Interpretation |
-| :--- | :--- |
-| ⚡ **Fast + Incorrect** | Indicates impulsive response patterns. |
-| 🐢 **Slow + Correct** | Indicates reflective and deliberate thinking. |
-| 🔄 **Repeated Errors** | Suggests underlying conceptual weakness. |
-
----
-
-## 🗄️ Data Design
-
-Core entities tracked within the system:
-- `Users` → Profile, goals, context.
-- `Sessions` → Topic interactions, timestamps.
-- `Performance` → Correctness, time taken.
-- `Insights` → Patterns, weak areas, scores.
-
----
-
-## 🔬 Research Perspective
-
-M-Print is an exploratory system that attempts to translate pedagogical concepts into computational models. It reflects a broader shift:
-
-> **From static learning systems → to adaptive, cognitively-aware intelligence systems.**
-
-This work is not a complete solution, but an evolving attempt to bridge AI systems, human cognition, and learning sciences.
-
----
-
-## 🚀 Future Scope
-
-- [ ] Machine learning–based cognitive prediction
-- [ ] Dropout risk detection
-- [ ] Personalized long-term learning pathways
-- [ ] Deeper validation of behavioral models
-- [ ] Research publication
-
----
-
-## ⚠️ Limitations
-
-- Cognitive modeling is approximate, not definitive.
-- Behavioral signals may not fully capture learning depth.
-- Requires further empirical validation.
-- Usage of the Gemini API (free tier) is subject to quota limitations. Exceeding the quota may lead to repeated questions, delayed responses, or occasional errors.
-
----
-
-## 🤝 Contributing
-
-Contributions, ideas, and critiques are welcome. Feel free to open issues or submit pull requests to help evolve this engine.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📜 License
-
-This project is licensed under the **Apache License 2.0**.  
-You are free to use, modify, and distribute this software with proper attribution. See the `LICENSE` file for details.
-
----
-
-## 🙏 Acknowledgements
-
-Grateful to the open-source communities behind:
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Neo4j](https://neo4j.com/)
-- [Three.js](https://threejs.org/)
+**Authorship and attribution:** repository history documents code changes; if AI assisted implementation or writing, individual contributions should be represented accurately in CVs and applications. No claims of peer review or original cognitive science theory are implied by this README.
