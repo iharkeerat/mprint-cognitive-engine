@@ -15,13 +15,13 @@ M-Print explores a practical question: **how can option-level responses and prer
 | Prerequisite graph | [graph_query.py](graph_query.py), [graph_loader.py](graph_loader.py), [skills.json](skills.json) | Neo4j skill relationships and graph-based path queries |
 | Persistence | [database.py](database.py), [main.py](main.py) | SQLite tables for users, sessions and submitted responses |
 | Browser interface | [index.html](index.html) | Standalone HTML/JavaScript frontend using CDN-loaded visual components |
-| Sample content | [\*_questions.json](ml_questions.json) | Local question banks used as a fallback |
+| Sample content | [sample question banks](ml_questions.json) | Local question banks used as a fallback |
 
 The optional Google GenAI integration generates question content when configured. API failure is handled by a local-question fallback within the question endpoint; **the code has not been independently smoke-tested for zero-credential startup**.
 
 ## Architecture at a glance
 
-\`\`\`text
+```text
 Browser interface (index.html)
     |
     v
@@ -32,7 +32,7 @@ FastAPI (main.py)
     |-- Neo4j: prerequisite graph and learning-path queries
     |
     +-- independent heuristic scoring experiment (mprint_engine.py)
-\`\`\`
+```
 
 **Terminology matters.** Labels such as *Activist*, *Reflector*, *Theorist* and *Pragmatist* are **developer-assigned response categories**, not independently established learning styles, cognitive profiles or psychological diagnoses. The source's "confidence" metric is a margin between normalized label scores, **not a statistically calibrated probability**. Correctness and time are observable interface measurements; psychological interpretation remains unvalidated.
 
@@ -42,9 +42,9 @@ The Python environment and external services must be configured before starting 
 
 1. Clone this repository and create a Python virtual environment.
 2. Install the provided [requirements.txt](requirements.txt) (a development-environment snapshot, not a tested minimal dependency lock).
-3. Create a local \`.env\` using [the example](.env.example) and set **your own** Gemini API key and Neo4j connection credentials. Never commit credentials.
-4. Run a compatible local Neo4j instance and populate its graph using \`python graph_loader.py\`.
-5. Start the API with \`uvicorn main:app --reload\`, then open \`http://127.0.0.1:8000/docs\` to inspect its FastAPI endpoints.
+3. Create a local `.env` using [the example](.env.example) and set **your own** Gemini API key and Neo4j connection credentials. Never commit credentials.
+4. Run a compatible local Neo4j instance and populate its graph using `python graph_loader.py`.
+5. Start the API with `uvicorn main:app --reload`, then open `http://127.0.0.1:8000/docs` to inspect its FastAPI endpoints.
 6. Serve [index.html](index.html) locally and configure its API origin if necessary.
 
 **These are source-derived setup instructions, not a claim that a clean installation or frontend integration was verified on 11 November 2026.** See [Reproducibility and setup notes](docs/REPRODUCIBILITY.md) for prerequisites, checks and troubleshooting.
